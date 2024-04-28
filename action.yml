@@ -12,7 +12,7 @@ runs:
   using: "composite"
   steps:
     - name: Hello World
-      run: echo "Hello ${INPUT_NAME}"
+      run: scripts/action.sh hello-world
       shell: bash
       env:
         INPUT_NAME: ${{inputs.name}}
