@@ -1,0 +1,18 @@
+name: "Sonar-less Code Scan"
+description: "SonarQube Code Scan without a hosted SonarQube Server"
+author: "GitRicko"
+
+inputs:
+  name:
+    description: "Name to say hello to"
+    required: true
+    default: "World"
+
+runs:
+  using: "composite"
+  steps:
+    - name: Hello World
+      run: echo "Hello ${INPUT_NAME}"
+      shell: bash
+      env:
+        INPUT_NAME: ${{inputs.name}}
