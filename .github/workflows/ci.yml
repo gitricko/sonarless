@@ -1,4 +1,4 @@
-name: Hello
+name: CI
 
 on:
   workflow_dispatch:

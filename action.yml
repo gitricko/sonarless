@@ -3,6 +3,10 @@ description: "SonarQube Code Scan without a hosted SonarQube Server"
 author: "GitRicko"
 
 inputs:
+  sonar-project-name:
+    description: "SonarQube Project Name"
+    required: true
+    default: ${{github.event.repository.name}}
   name:
     description: "Name to say hello to"
     required: true
@@ -16,3 +20,4 @@ runs:
       shell: bash
       env:
         INPUT_NAME: ${{inputs.name}}
+        SONAR_PROJECT_NAME: ${{inputs.sonar-project-name}}

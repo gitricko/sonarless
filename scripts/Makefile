@@ -1,6 +1,7 @@
 export SONAR_CLI_VERSION ?= 5.0.1
 export SONAR_INSTANCE_NAME ?= sonar
-export SONAR_PROJECT_NAME := $(shell basename `pwd`)
+# export SONAR_PROJECT_NAME := $(shell basename `pwd`)
+export SONAR_PROJECT_NAME ?= $(shell basename `pwd`)
 
 
 sonar-start:
