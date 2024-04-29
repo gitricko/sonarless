@@ -16,7 +16,7 @@ runs:
   using: "composite"
   steps:
     - name: Hello World
-      run: make -C scripts sonar-start
+      run: make -C scripts sonar-action
       shell: bash
       env:
         INPUT_NAME: ${{inputs.name}}

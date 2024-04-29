@@ -4,7 +4,7 @@ function uri_wait(){
     set +e
     URL=$1
     SLEEP_INT=${2:-60}
-    printf "Waiting for URI:${URL} to be http-200 "
+    printf "Waiting for URI - ${URL} to be http-200 "
     for i in $(seq 1 ${SLEEP_INT}); do
         sleep 1
         printf .
@@ -53,9 +53,46 @@ function sonar-start() {
 
 }
 
-function hello-world() {
-    echo "Hello ${INPUT_NAME}"
-    docker ps -a
+function sonar-scan() {
+    # 1. Download scanner jar if not exist
+    PATH_SCANNER=/tmp/sonar-scanner-cli.jar
+
+    if [ ! -e ${PATH_SCANNER} ]; then
+        echo "Downloading sonar-scanner-cli.jar..."
+        curl -s -o ${PATH_SCANNER} "https://repo1.maven.org/maven2/org/sonarsource/scanner/cli/sonar-scanner-cli/${SONAR_CLI_VERSION}/sonar-scanner-cli-${SONAR_CLI_VERSION}.jar"
+    fi
+
+    # 2. Create token and scan
+    echo "$(pwd)"
+    SONAR_TOKEN=$(curl -s -X POST -u "admin:sonar" "http://localhost:9000/api/user_tokens/generate?name=$(date +%s%N)" | jq -r .token) \
+    java -jar ${PATH_SCANNER} \
+            -Dsonar.token=${SONAR_TOKEN} \
+            -Dsonar.host.url=http://localhost:9000 \
+            -Dsonar.sources=/workspaces/sonar-less-action \
+            -Dsonar.projectKey=${SONAR_PROJECT_NAME} \
+            -Dsonar.projectName=${SONAR_PROJECT_NAME}
+
+            # -Dproject.settings=./sonar-project.properties
+
+    # 3. Wait for scanning to be done
+    printf '\nWaiting for analysis ' 
+    for i in $(seq 1 120); do
+        sleep 1
+        printf .
+        status_value=$(curl -s -u "admin:sonar" http://localhost:9000/api/qualitygates/project_status?projectKey=${SONAR_PROJECT_NAME} | jq -r .projectStatus.status)
+        # Checking if the status value is not "NONE"
+        if [[ "$status_value" != "NONE" ]]; then
+            printf "\nSonarQube scanning done\n"
+            printf "Use webui or 'make sonar-results' to get scan outputs"
+            break
+        fi
+    done
+}
+
+function sonar-results() {
+    # use this params to collect stats
+    curl -s -u "admin:sonar" "http://localhost:9000/api/measures/component?component=${SONAR_PROJECT_NAME}&metricKeys=bugs,vulnerabilities,code_smells,quality_gate_details,violations,duplicated_lines_density,ncloc,coverage,reliability_rating,security_rating,security_review_rating,sqale_rating,security_hotspots,open_issues" | jq -r > sonar-results.json
+    cat sonar-results.json
 }
 
 $*
