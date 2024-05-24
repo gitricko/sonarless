@@ -10,7 +10,7 @@ inputs:
   name:
     description: "Name to say hello to"
     required: true
-    default: "World"
+    default: "World2"
 
 runs:
   using: "composite"
