@@ -7,7 +7,7 @@ inputs:
     description: "SonarQube Project Name"
     required: true
     default: ${{github.event.repository.name}}
-  name:
+  sonar-project-key:
     description: "Name to say hello to"
     required: true
     default: "World2"
@@ -19,5 +19,5 @@ runs:
       run: make -C scripts sonar-action
       shell: bash
       env:
-        INPUT_NAME: ${{inputs.name}}
         SONAR_PROJECT_NAME: ${{inputs.sonar-project-name}}
+        SONAR_PROJECT_KEY: ${{inputs.sonar-project-key}}

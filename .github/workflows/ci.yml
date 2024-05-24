@@ -28,4 +28,7 @@ jobs:
       - name: Sonar-less-Scan
         uses: ./
         with:
-          name: 'fred'
+          sonar-organization: 'organization'
+          sonar-project-name: 'my-project-name'
+          sonar-project-version: '0.1'
+          sonar-sources: '.'

@@ -54,26 +54,24 @@ function sonar-start() {
 }
 
 function sonar-scan() {
-    # 0. java version
-    java --version
-
     # 1. Download scanner jar if not exist
-    PATH_SCANNER=/tmp/sonar-scanner-cli.jar
+    # PATH_SCANNER=/tmp/sonar-scanner-cli.jar
 
-    if [ ! -e ${PATH_SCANNER} ]; then
-        echo "Downloading sonar-scanner-cli.jar..."
-        curl -s -o ${PATH_SCANNER} "https://repo1.maven.org/maven2/org/sonarsource/scanner/cli/sonar-scanner-cli/${SONAR_CLI_VERSION}/sonar-scanner-cli-${SONAR_CLI_VERSION}.jar"
-    fi
+    # if [ ! -e ${PATH_SCANNER} ]; then
+    #     echo "Downloading sonar-scanner-cli.jar..."
+    #     curl -s -o ${PATH_SCANNER} "https://repo1.maven.org/maven2/org/sonarsource/scanner/cli/sonar-scanner-cli/${SONAR_CLI_VERSION}/sonar-scanner-cli-${SONAR_CLI_VERSION}.jar"
+    # fi
+
+    # 1. Get internal IP for Sonar-Server
+    export DOCKER_SONAR_IP=$(docker inspect sonar | jq -r '.[].NetworkSettings.IPAddress')
 
     # 2. Create token and scan
-    echo "$(pwd)"
-    SONAR_TOKEN=$(curl -s -X POST -u "admin:sonar" "http://localhost:9000/api/user_tokens/generate?name=$(date +%s%N)" | jq -r .token) \
-    java -jar ${PATH_SCANNER} \
-            -Dsonar.token=${SONAR_TOKEN} \
-            -Dsonar.host.url=http://localhost:9000 \
-            -Dsonar.sources=/workspaces/sonar-less-action \
-            -Dsonar.projectKey=${SONAR_PROJECT_NAME} \
-            -Dsonar.projectName=${SONAR_PROJECT_NAME}
+    export SONAR_TOKEN=$(curl -s -X POST -u "admin:sonar" "http://localhost:${DOCKER_SONAR_IP}/api/user_tokens/generate?name=$(date +%s%N)" | jq -r .token)
+    docker run --rm \
+        -e SONAR_HOST_URL="http://${DOCKER_SONAR_IP}:9000"  \
+        -e SONAR_TOKEN=${SONAR_TOKEN} \
+        -v "$HOME:/usr/src" \
+        sonarsource/sonar-scanner-cli
 
             # -Dproject.settings=./sonar-project.properties
 
