@@ -54,6 +54,9 @@ function sonar-start() {
 }
 
 function sonar-scan() {
+    # 0. java version
+    java --version
+
     # 1. Download scanner jar if not exist
     PATH_SCANNER=/tmp/sonar-scanner-cli.jar
 
