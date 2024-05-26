@@ -10,7 +10,7 @@ sonar-scan: sonar-start
 	echo "*** $$SONAR_PROJECT_NAME ***"
 	echo "*** $$SONAR_PROJECT_KEY ***"
 
-	@bash ./action.sh sonar-scan
+	./action.sh sonar-scan
 
 sonar-results:
 	@bash ./action.sh sonar-results
