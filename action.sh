@@ -64,14 +64,13 @@ function sonar-scan() {
 
     # 1. Get internal IP for Sonar-Server
     export DOCKER_SONAR_IP=$(docker inspect sonar | jq -r '.[].NetworkSettings.IPAddress')
-
     # 2. Create token and scan
-    export SONAR_SOURCES="$(pwd)/.."
-    export SONAR_TOKEN=$(curl -s -X POST -u "admin:sonar" "http://localhost:${DOCKER_SONAR_IP}/api/user_tokens/generate?name=$(date +%s%N)" | jq -r .token)
+    export SONAR_SOURCES="$(pwd)"
+    export SONAR_TOKEN=$(curl -s -X POST -u "admin:sonar" "http://${DOCKER_SONAR_IP}:9000/api/user_tokens/generate?name=$(date +%s%N)" | jq -r .token)
     docker run --rm \
         -e SONAR_HOST_URL="http://${DOCKER_SONAR_IP}:9000"  \
         -e SONAR_TOKEN=${SONAR_TOKEN} \
-        -v "$SONAR_SOURCES:/usr/src" \
+        -v "${SONAR_SOURCES}:/usr/src" \
         sonarsource/sonar-scanner-cli
 
             # -Dproject.settings=./sonar-project.properties
