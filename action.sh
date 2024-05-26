@@ -44,7 +44,7 @@ function sonar-start() {
     curl -s -X POST -u "admin:admin" \
         -d "login=admin&previousPassword=admin&password=sonar" \
         http://localhost:9000/api/users/change_password
-    echo "Local sonarqube URI: http://localhost:9000"
+    echo "Local sonarqube URI: http://localhost:9000" 
 
     # 3. Create default project and set default fav
     curl -s -u "admin:sonar" -X POST "http://localhost:9000/api/projects/create?name=${SONAR_PROJECT_NAME}&project=${SONAR_PROJECT_NAME}" | jq
