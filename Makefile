@@ -11,11 +11,12 @@ sonar-start:
 sonar-scan: sonar-start
 	echo "*** $$SONAR_PROJECT_NAME ***"
 	echo "*** $$SONAR_PROJECT_KEY ***"
+	echo "*** $$SONAR_SOURCES ***"
 
 	./action.sh sonar-scan
 
 sonar-results:
-	@bash ./action.sh sonar-results
+	./action.sh sonar-results
 
 sonar-stop: 
 	docker rm -f $(SONAR_INSTANCE_NAME)
