@@ -22,7 +22,6 @@ runs:
         SONAR_PROJECT_NAME: ${{inputs.sonar-project-name}}
         SONAR_PROJECT_KEY: ${{inputs.sonar-project-key}}
 
-  steps:
     - name: Scan Results
       run: make sonar-results
       shell: bash
