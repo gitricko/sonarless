@@ -66,11 +66,12 @@ function sonar-scan() {
     export DOCKER_SONAR_IP=$(docker inspect sonar | jq -r '.[].NetworkSettings.IPAddress')
 
     # 2. Create token and scan
+    echo "sonar-scan: $SONAR_SOURCES pwd: `pwd`"
     export SONAR_TOKEN=$(curl -s -X POST -u "admin:sonar" "http://localhost:${DOCKER_SONAR_IP}/api/user_tokens/generate?name=$(date +%s%N)" | jq -r .token)
     docker run --rm \
         -e SONAR_HOST_URL="http://${DOCKER_SONAR_IP}:9000"  \
         -e SONAR_TOKEN=${SONAR_TOKEN} \
-        -v "$HOME:/usr/src" \
+        -v "$SONAR_SOURCES:/usr/src" \
         sonarsource/sonar-scanner-cli
 
             # -Dproject.settings=./sonar-project.properties
