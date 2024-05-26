@@ -29,6 +29,5 @@ jobs:
         uses: ./
         with:
           sonar-organization: 'organization'
-          sonar-project-name: 'my-project-name'
           sonar-project-version: '0.1'
           sonar-sources: '.'
