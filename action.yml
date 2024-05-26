@@ -15,8 +15,16 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - name: Hello World
+    - name: Scanning
       run: make sonar-action
+      shell: bash
+      env:
+        SONAR_PROJECT_NAME: ${{inputs.sonar-project-name}}
+        SONAR_PROJECT_KEY: ${{inputs.sonar-project-key}}
+
+  steps:
+    - name: Scan Results
+      run: make sonar-results
       shell: bash
       env:
         SONAR_PROJECT_NAME: ${{inputs.sonar-project-name}}
