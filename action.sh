@@ -54,14 +54,6 @@ function sonar-start() {
 }
 
 function sonar-scan() {
-    # 1. Download scanner jar if not exist
-    # PATH_SCANNER=/tmp/sonar-scanner-cli.jar
-
-    # if [ ! -e ${PATH_SCANNER} ]; then
-    #     echo "Downloading sonar-scanner-cli.jar..."
-    #     curl -s -o ${PATH_SCANNER} "https://repo1.maven.org/maven2/org/sonarsource/scanner/cli/sonar-scanner-cli/${SONAR_CLI_VERSION}/sonar-scanner-cli-${SONAR_CLI_VERSION}.jar"
-    # fi
-
     # 1. Get internal IP for Sonar-Server
     export DOCKER_SONAR_IP=$(docker inspect sonar | jq -r '.[].NetworkSettings.IPAddress')
     # 2. Create token and scan
@@ -70,6 +62,7 @@ function sonar-scan() {
     docker run --rm \
         -e SONAR_HOST_URL="http://${DOCKER_SONAR_IP}:9000"  \
         -e SONAR_TOKEN=${SONAR_TOKEN} \
+        -e SONAR_SCANNER_OPTS="-Dsonar.projectKey=${SONAR_PROJECT_NAME} -Dsonar.sources=." \
         -v "${SONAR_SOURCES}:/usr/src" \
         sonarsource/sonar-scanner-cli
 
