@@ -55,9 +55,10 @@ function sonar-start() {
 
 function sonar-scan() {
     # 1. Get internal IP for Sonar-Server
-    export DOCKER_SONAR_IP=$(docker inspect sonar | jq -r '.[].NetworkSettings.IPAddress')
+    export DOCKER_SONAR_IP=$(docker inspect ${SONAR_INSTANCE_NAME} | jq -r '.[].NetworkSettings.IPAddress')
     # 2. Create token and scan
-    export SONAR_SOURCES="$(pwd)"
+    # export SONAR_SOURCES="$(pwd)"
+    echo "SONAR_SOURCES: ${SONAR_SOURCES}"
     export SONAR_TOKEN=$(curl -s -X POST -u "admin:sonar" "http://${DOCKER_SONAR_IP}:9000/api/user_tokens/generate?name=$(date +%s%N)" | jq -r .token)
     docker run --rm \
         -e SONAR_HOST_URL="http://${DOCKER_SONAR_IP}:9000"  \
@@ -73,11 +74,11 @@ function sonar-scan() {
     for i in $(seq 1 120); do
         sleep 1
         printf .
-        status_value=$(curl -s -u "admin:sonar" http://localhost:9000/api/qualitygates/project_status?projectKey=${SONAR_PROJECT_NAME} | jq -r .projectStatus.status)
+        status_value=$(curl -s -u "admin:sonar" http://${DOCKER_SONAR_IP}:9000/api/qualitygates/project_status?projectKey=${SONAR_PROJECT_NAME} | jq -r .projectStatus.status)
         # Checking if the status value is not "NONE"
         if [[ "$status_value" != "NONE" ]]; then
             printf "\nSonarQube scanning done\n"
-            printf "Use webui or 'make sonar-results' to get scan outputs"
+            printf "Use webui or 'make sonar-results' to get scan outputs\n"
             break
         fi
     done

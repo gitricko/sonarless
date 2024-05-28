@@ -8,17 +8,15 @@ inputs:
     required: true
     default: ${{github.event.repository.name}}
   sonar-project-key:
-    description: "Name to say hello to"
+    description: "SonarQube Project Name"
     required: true
-    default: "World2"
+    default: ${{github.event.repository.name}}
 
 runs:
   using: "composite"
   steps:
     - name: Get Docker Deps
-      run: |
-        docker pull sonarsource/sonar-scanner-cli
-        docker pull sonarqube
+      run: make sonar-docker-deps-get
       shell: bash
 
     - name: Scanning
