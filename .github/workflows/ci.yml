@@ -30,4 +30,4 @@ jobs:
         with:
           sonar-organization: 'organization'
           sonar-project-version: '0.1'
-          sonar-sources: '.'
+          sonar-source-path: '.'
