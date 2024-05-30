@@ -5,15 +5,12 @@ export SONAR_INSTANCE_NAME ?= sonar-server
 export SONAR_PROJECT_NAME ?= $(shell basename `pwd`)
 export SONAR_PROJECT_KEY ?= $(shell basename `pwd`)
 export SONAR_SOURCES ?= $(shell echo `pwd`)
+export SONAR_SOURCE_PATH ?= .
 
 sonar-start:
 	@bash ./action.sh sonar-start
 
 sonar-scan: sonar-start
-	echo "*** $$SONAR_PROJECT_NAME ***"
-	echo "*** $$SONAR_PROJECT_KEY ***"
-	echo "*** $$SONAR_SOURCES ***"
-
 	./action.sh sonar-scan
 
 sonar-results:
