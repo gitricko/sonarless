@@ -1,0 +1,38 @@
+name: "Sonar-less Code Scan"
+description: "SonarQube Code Scan without a hosted SonarQube Server"
+author: "GitRicko"
+
+inputs:
+  sonar-project-name:
+    description: "SonarQube Project Name"
+    required: true
+    default: ${{github.event.repository.name}}
+  sonar-project-key:
+    description: "SonarQube Project Key"
+    required: true
+    default: ${{github.event.repository.name}}
+  sonar-source-path:
+    description: "SonarQube Source Path from Git Root"
+    required: true
+    default: .
+runs:
+  using: "composite"
+  steps:
+    - name: Get Docker Deps
+      run: make sonar-docker-deps-get
+      shell: bash
+
+    - name: Scanning
+      run: make sonar-action
+      shell: bash
+      env:
+        SONAR_PROJECT_NAME: ${{inputs.sonar-project-name}}
+        SONAR_PROJECT_KEY: ${{inputs.sonar-project-key}}
+        SONAR_SOURCE_PATH: ${{inputs.sonar-source-path}}
+
+    - name: Scan Results
+      run: make sonar-results
+      shell: bash
+      env:
+        SONAR_PROJECT_NAME: ${{inputs.sonar-project-name}}
+        SONAR_PROJECT_KEY: ${{inputs.sonar-project-key}}
