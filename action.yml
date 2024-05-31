@@ -19,19 +19,20 @@ runs:
   using: "composite"
   steps:
     - name: Get Docker Deps
-      run: make sonar-docker-deps-get
+      run: make -C ${{ github.action_path }} sonar-docker-deps-get
       shell: bash
 
     - name: Scanning
-      run: make sonar-action
+      run: make -C ${{ github.action_path }} sonar-action
       shell: bash
       env:
         SONAR_PROJECT_NAME: ${{inputs.sonar-project-name}}
         SONAR_PROJECT_KEY: ${{inputs.sonar-project-key}}
         SONAR_SOURCE_PATH: ${{inputs.sonar-source-path}}
+        SONAR_SOURCES: ${{ github.workspace }}
 
     - name: Scan Results
-      run: make sonar-results
+      run: make -C ${{ github.action_path }} sonar-results
       shell: bash
       env:
         SONAR_PROJECT_NAME: ${{inputs.sonar-project-name}}

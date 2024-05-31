@@ -19,15 +19,8 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Setup-Java
-        uses: actions/setup-java@v4
-        with:
-          distribution: 'oracle'
-          java-version: '21'
-
       - name: Sonar-less-Scan
         uses: ./
         with:
-          sonar-organization: 'organization'
           sonar-project-version: '0.1'
-          sonar-source-path: '.'
+          sonar-source-path: 'test-src'
