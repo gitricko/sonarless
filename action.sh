@@ -56,8 +56,11 @@ function sonar-start() {
 function sonar-scan() {
     # 1. Get internal IP for Sonar-Server
     export DOCKER_SONAR_IP=$(docker inspect ${SONAR_INSTANCE_NAME} | jq -r '.[].NetworkSettings.IPAddress')
+
+    echo "SONAR_SOURCES: ${SONAR_SOURCES}"
+    echo "SONAR_SOURCE_PATH: ${SONAR_SOURCE_PATH}"
+
     # 2. Create token and scan
-    echo "SONAR_SOURCES: ${SONAR_SOURCES}/${SONAR_SOURCE_PATH}"
     export SONAR_TOKEN=$(curl -s -X POST -u "admin:sonar" "http://${DOCKER_SONAR_IP}:9000/api/user_tokens/generate?name=$(date +%s%N)" | jq -r .token)
     docker run --rm \
         -e SONAR_HOST_URL="http://${DOCKER_SONAR_IP}:9000"  \
@@ -65,8 +68,6 @@ function sonar-scan() {
         -e SONAR_SCANNER_OPTS="-Dsonar.projectKey=${SONAR_PROJECT_NAME} -Dsonar.sources=${SONAR_SOURCE_PATH}" \
         -v "${SONAR_SOURCES}:/usr/src" \
         sonarsource/sonar-scanner-cli
-
-            # -Dproject.settings=./sonar-project.properties
 
     # 3. Wait for scanning to be done
     printf '\nWaiting for analysis ' 
