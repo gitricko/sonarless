@@ -1,0 +1,28 @@
+name: Test
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+      - releases/*
+
+jobs:
+  sonarless-action-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Sonarless Scan
+        uses: ./
+        with:
+          sonar-source-path: 'test-src'
+          sonar-metrics-path: './blahblah.json'
+
+      - name: Check Sonar Metrics
+        run: |
+          echo "Checking for any vulnerabilities in Sonar Metrics JSON"
+          VULN=$(cat ./blahblah.json | jq -r '.component.measures[] | select(.metric == "vulnerabilities").value')
+          echo "# of vulnerabilities = ${VULN}"
+          [ ${VULN} -eq "0" ]

@@ -57,7 +57,7 @@ function sonar-scan() {
     # 1. Get internal IP for Sonar-Server
     export DOCKER_SONAR_IP=$(docker inspect ${SONAR_INSTANCE_NAME} | jq -r '.[].NetworkSettings.IPAddress')
 
-    echo "SONAR_SOURCES: ${SONAR_SOURCES}"
+    echo "SONAR_GITROOT: ${SONAR_GITROOT}"
     echo "SONAR_SOURCE_PATH: ${SONAR_SOURCE_PATH}"
 
     # 2. Create token and scan
@@ -66,7 +66,7 @@ function sonar-scan() {
         -e SONAR_HOST_URL="http://${DOCKER_SONAR_IP}:9000"  \
         -e SONAR_TOKEN=${SONAR_TOKEN} \
         -e SONAR_SCANNER_OPTS="-Dsonar.projectKey=${SONAR_PROJECT_NAME} -Dsonar.sources=${SONAR_SOURCE_PATH}" \
-        -v "${SONAR_SOURCES}:/usr/src" \
+        -v "${SONAR_GITROOT}:/usr/src" \
         sonarsource/sonar-scanner-cli
 
     # 3. Wait for scanning to be done
@@ -86,8 +86,9 @@ function sonar-scan() {
 
 function sonar-results() {
     # use this params to collect stats
-    curl -s -u "admin:sonar" "http://localhost:9000/api/measures/component?component=${SONAR_PROJECT_NAME}&metricKeys=bugs,vulnerabilities,code_smells,quality_gate_details,violations,duplicated_lines_density,ncloc,coverage,reliability_rating,security_rating,security_review_rating,sqale_rating,security_hotspots,open_issues" | jq -r > sonar-results.json
-    cat sonar-results.json
+    curl -s -u "admin:sonar" "http://localhost:9000/api/measures/component?component=${SONAR_PROJECT_NAME}&metricKeys=bugs,vulnerabilities,code_smells,quality_gate_details,violations,duplicated_lines_density,ncloc,coverage,reliability_rating,security_rating,security_review_rating,sqale_rating,security_hotspots,open_issues" \
+        | jq -r > ${SONAR_GITROOT}/${SONAR_METRICS_PATH}
+    cat ${SONAR_GITROOT}/${SONAR_METRICS_PATH}
 }
 
 $*
