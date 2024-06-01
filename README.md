@@ -1,8 +1,8 @@
 [![Test](https://github.com/gitricko/sonarless/actions/workflows/test.yml/badge.svg)](https://github.com/gitricko/sonarless/actions/workflows/test.yml)
 
-# Sonarless V0
+# Sonarless v0
 
-This action enable sonarqube scanning for your repository without a need of a dedicated sonarqube server. This action will boot up a sonarqube docker instance and enable developers to scan checkout code and give you a metric json for you to check the quality of the code.
+This action and its developer friendly helper scripts enable sonarqube scanning for your repository without a need of a dedicated hosted sonarqube server. It boots up a sonarqube docker instance and enable developers to scan checkout code and give a metric json so that you can check the quality of the code.
 
 # Usage
 
@@ -11,8 +11,12 @@ This action enable sonarqube scanning for your repository without a need of a de
 - uses: gitricko/sonarless@v0
   with:
     # Folder path to scan from git-root
-    # Default: . (git root)
+    # Default: . 
     sonar-source-path: ''
+
+    # Path to SonarQube metrics json from git-root
+    # Default: ./sonar-metrics.json 
+    sonar-metrics-path: ''
 
     # SonarQube Project Name
     # Default: ${{ github.event.repository.name }}

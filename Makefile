@@ -4,11 +4,12 @@ export SONAR_CLI_VERSION ?= 5.0.1.3006
 export SONAR_INSTANCE_NAME ?= sonar-server
 export SONAR_PROJECT_NAME ?= $(shell basename `pwd`)
 export SONAR_PROJECT_KEY ?= $(shell basename `pwd`)
-export SONAR_SOURCES ?= $(shell echo `pwd`)
+export SONAR_GITROOT ?= $(shell echo `pwd`)
 export SONAR_SOURCE_PATH ?= .
+export SONAR_METRICS_PATH ?= ./sonar-metrics.json
 
 sonar-start:
-	@bash ./action.sh sonar-start
+	./action.sh sonar-start
 
 sonar-scan: sonar-start
 	./action.sh sonar-scan

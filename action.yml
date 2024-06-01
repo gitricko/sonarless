@@ -15,6 +15,11 @@ inputs:
     description: "SonarQube Source Path from Git Root"
     required: true
     default: .
+  sonar-metrics-path:
+    description: "SonarQube Metrics JSON Path from Git Root"
+    required: true
+    default: ./sonar-matrics.json
+
 runs:
   using: "composite"
   steps:
@@ -29,7 +34,7 @@ runs:
         SONAR_PROJECT_NAME: ${{inputs.sonar-project-name}}
         SONAR_PROJECT_KEY: ${{inputs.sonar-project-key}}
         SONAR_SOURCE_PATH: ${{inputs.sonar-source-path}}
-        SONAR_SOURCES: ${{ github.workspace }}
+        SONAR_GITROOT: ${{ github.workspace }}
 
     - name: Scan Results
       run: make -C ${{ github.action_path }} sonar-results
