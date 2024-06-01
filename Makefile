@@ -9,18 +9,18 @@ export SONAR_SOURCE_PATH ?= .
 export SONAR_METRICS_PATH ?= ./sonar-metrics.json
 
 sonar-start:
-	./action.sh sonar-start
+	./makefile.sh sonar-start
 
 sonar-scan: sonar-start
-	./action.sh sonar-scan
+	./makefile.sh sonar-scan
 
 sonar-results:
-	./action.sh sonar-results
+	./makefile.sh sonar-results
 
 sonar-stop: 
 	docker rm -f $(SONAR_INSTANCE_NAME)
 
-sonar-action: sonar-scan
+sonar-makefile: sonar-scan
 
 sonar-docker-deps-get:
 	docker pull sonarsource/sonar-scanner-cli

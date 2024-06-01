@@ -78,13 +78,14 @@ jobs:
         uses: gitricko/sonarless@v0
         with:
           sonar-source-path: 'src'
-          sonar-metrics-path: 'sonar-mymetrics.json'
+          sonar-metrics-path: './sonar-mymetrics.json'
 
       - name: Check Sonar Metrics
-        uses: gitricko/sonarless@v0
-        with:
-          sonar-source-path: 'src'
-          sonar-metrics-path: 'sonar-mymetrics.json' 
+        run: |
+          echo "Checking for any vulnerabilities in Sonar Metrics JSON"
+          VULN=$(cat ./sonar-mymetrics.json | jq -r '.component.measures[] | select(.metric == "vulnerabilities").value')
+          echo "# of vulnerabilities = ${VULN}"
+          [ ${VULN} -eq "0" ]
 ```
 
 # Coffee
