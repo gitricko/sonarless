@@ -80,13 +80,24 @@ jobs:
           sonar-source-path: 'src'
           sonar-metrics-path: './sonar-mymetrics.json'
 
-      - name: Check Sonar Metrics
+      - name: Check Sonar Metrics - No Vulnerabilities
         run: |
           echo "Checking for any vulnerabilities in Sonar Metrics JSON"
           VULN=$(cat ./sonar-mymetrics.json | jq -r '.component.measures[] | select(.metric == "vulnerabilities").value')
           echo "# of vulnerabilities = ${VULN}"
           [ ${VULN} -eq "0" ]
 ```
+# Use Sonarless in your Local Dev
+
+Just copy 3 files from this repository. `Makefile` and `makefile.sh` in to your git-root.
+
+To start scanning your code, just run `make sonar-scan`. When the scan is done, just login webui into your local personal instance of sonarqube via [http://localhost:9000](http://localhost:9000) to get your results and where you can improve your code. The default password for `admin` is `sonar`
+
+If you want to get the metrics file, run `make sonar-results` and `sonar-metrics.json` will be generated in your git-root
+
+Use `make docker-clean` to clean up your sonar instance
+
+This small scriptlet works perfectly with Github CodeSpace
 
 # Coffee
 
