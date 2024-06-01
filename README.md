@@ -32,7 +32,7 @@ This action and its developer friendly helper scripts enable sonarqube scanning 
 
 - [Scan all files from git root directory](#Sonar-scan-all-files-from-git-root-directory)
 - [Scan particular folder from git root directory](#Scan-particular-folder-from-git-root-directory)
-
+- [Scan code and fail build if metrics below expectation](Scan-code-and-fail-build-if-metrics below-expectation)
 
 ## Sonar scan all files from git root directory
 
@@ -63,3 +63,30 @@ jobs:
         with:
           sonar-source-path: 'src'
 ```
+
+## Scan code and fail build if metrics below expectation
+
+```yaml
+jobs:
+  Sonarless-Scan:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Sonarless Scan
+        uses: gitricko/sonarless@v0
+        with:
+          sonar-source-path: 'src'
+          sonar-metrics-path: 'sonar-mymetrics.json'
+
+      - name: Check Sonar Metrics
+        uses: gitricko/sonarless@v0
+        with:
+          sonar-source-path: 'src'
+          sonar-metrics-path: 'sonar-mymetrics.json' 
+```
+
+# Coffee
+
+If you find this small helper script and action helpful, buy me a [sip of coffee](https://ko-fi.com/gitricko) here to show your appreciation (only if you want to)

@@ -19,3 +19,8 @@ jobs:
         with:
           sonar-source-path: 'test-src'
           sonar-metrics-path: './blahblah.json'
+
+      - name: Check Sonar Metrics
+        run: |
+          echo "Checking for bugs in Sonar Metrics JSON"
+          jq -r ./blahblah.json
