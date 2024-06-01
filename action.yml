@@ -1,6 +1,6 @@
-name: "Sonar-less Code Scan"
-description: "SonarQube Code Scan without a hosted SonarQube Server"
-author: "GitRicko"
+name: "Sonarless Code Scan"
+description: "SonarQube Scan GitHub Action without a dedicated hosted SonarQube Server"
+author: "gitricko"
 
 inputs:
   sonar-project-name:
