@@ -22,6 +22,7 @@ jobs:
 
       - name: Check Sonar Metrics
         run: |
-          echo "Checking for bugs in Sonar Metrics JSON"
-          ls -lah
-          jq -r ./blahblah.json
+          echo "Checking for any vulnerabilities in Sonar Metrics JSON"
+          VULN=$(cat sonar-results.json | jq -r '.component.measures[] | select(.metric == "vulnerabilities").value')
+          echo "# of vulnerabilities = ${VULN}"
+          [ ${VULN} -eq "0" ]
