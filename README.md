@@ -32,7 +32,7 @@ This action and its developer friendly helper scripts enable sonarqube scanning 
 
 - [Scan all files from git root directory](#Sonar-scan-all-files-from-git-root-directory)
 - [Scan particular folder from git root directory](#Scan-particular-folder-from-git-root-directory)
-- [Scan code and fail build if metrics below expectation](Scan-code-and-fail-build-if-metrics below-expectation)
+- [Scan code and fail build if metrics is below expectation](#Scan-code-and-fail-build-if-metrics-is-below-expectation)
 
 ## Sonar scan all files from git root directory
 
@@ -64,7 +64,7 @@ jobs:
           sonar-source-path: 'src'
 ```
 
-## Scan code and fail build if metrics below expectation
+## Scan code and fail build if metrics is below expectation
 
 ```yaml
 jobs:
