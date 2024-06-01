@@ -1,4 +1,4 @@
-[![Build and Test](https://github.com/gitricko/sonarless/actions/workflows/ci.yml/badge.svg)](https://github.com/gitricko/sonarless/actions/workflows/ci.yml)
+[![Test](https://github.com/gitricko/sonarless/actions/workflows/test.yml/badge.svg)](https://github.com/gitricko/sonarless/actions/workflows/test.yml)
 
 # Sonarless V0
 
