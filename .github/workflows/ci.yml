@@ -19,7 +19,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Sonar-less-Scan
+      - name: Sonarless-Scan
         uses: ./
         with:
           sonar-project-version: '0.1'
