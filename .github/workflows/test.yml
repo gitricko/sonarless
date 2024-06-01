@@ -23,4 +23,5 @@ jobs:
       - name: Check Sonar Metrics
         run: |
           echo "Checking for bugs in Sonar Metrics JSON"
+          ls -lah
           jq -r ./blahblah.json
