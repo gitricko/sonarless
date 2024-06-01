@@ -28,7 +28,7 @@ runs:
       shell: bash
 
     - name: Scanning
-      run: make -C ${{ github.action_path }} sonar-action
+      run: make -C ${{ github.action_path }} sonar-scan
       shell: bash
       env:
         SONAR_PROJECT_NAME: ${{inputs.sonar-project-name}}

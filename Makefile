@@ -20,8 +20,6 @@ sonar-results:
 sonar-stop: 
 	docker rm -f $(SONAR_INSTANCE_NAME)
 
-sonar-makefile: sonar-scan
-
 sonar-docker-deps-get:
 	docker pull sonarsource/sonar-scanner-cli
 	docker pull sonarqube
