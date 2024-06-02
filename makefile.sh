@@ -10,6 +10,8 @@ export SONAR_METRICS_PATH=${SONAR_METRICS_PATH:-"./sonar-metrics.json"}
 export DOCKER_SONAR_CLI=sonarsource/sonar-scanner-cli
 export DOCKER_SONAR_SERVER=sonarqube
 
+export CLI_NAME="sonarless"
+
 function uri_wait(){
     set +e
     URL=$1
@@ -27,7 +29,21 @@ function uri_wait(){
 }
 
 function help() {
-    echo "help"
+    echo ''
+    echo '                                               _ '                
+    echo '               ___   ___   _ __    __ _  _ __ | |  ___  ___  ___ '
+    echo '              / __| / _ \ | "_ \  / _` || "__|| | / _ \/ __|/ __| '
+    echo '              \__ \| (_) || | | || (_| || |   | ||  __/\__ \\__ \ '
+    echo '              |___/ \___/ |_| |_| \__,_||_|   |_| \___||___/|___/ '
+    echo ''
+    echo ''
+    echo "${CLI_NAME} help        : this help menu"
+    echo "${CLI_NAME} scan        : to scan all code in current directory. Sonarqube Service will be started"
+    echo "${CLI_NAME} results     : show scan results and download the metric json in current directory"
+    echo "${CLI_NAME} start       : start SonarQube Service docker instance"
+    echo "${CLI_NAME} stop        : stop SonarQube Service docker instance"
+    echo "${CLI_NAME} uninstall   : uninstall all scriptlets and docker instances"
+    echo "${CLI_NAME} docker-clean: remove all docker instances. Note any history for sonar will be lost as docker instance are remove"
 }
 
 function start() {
@@ -125,6 +141,31 @@ function docker-clean() {
     docker image rm -f ${DOCKER_SONAR_CLI} ${DOCKER_SONAR_SERVER}
     docker image prune -f
     docker volume prune -f
+}
+
+function uninstall() {
+    # Local variables
+    sonarless_bashrc="${HOME}/.bashrc"
+    sonarless_zshrc="${HOME}/.zshrc"
+
+    docker-clean
+    
+    [[ -s "${sonarless_bashrc}" ]] && grep 'sonarless' ${sonarless_bashrc}
+    if [ $? -eq 0 ];then 
+        temp_file=$(mktemp)
+        sed '/sonarless/{x;d;}' ${sonarless_bashrc} > ${temp_file}
+        mv ${temp_file} ${sonarless_bashrc}
+    fi
+
+    [[ -s "${sonarless_zshrc}" ]] && grep 'sonarless' ${sonarless_zshrc}
+    if [ $? -eq 0 ];then 
+        temp_file=$(mktemp)
+        sed '/sonarless/{x;d;}' ${sonarless_zshrc} > ${temp_file}
+        mv ${temp_file} ${sonarless_zshrc}
+    fi
+
+    rm -rf ${HOME}/.${CLI_NAME}
+
 }
 
 $*
