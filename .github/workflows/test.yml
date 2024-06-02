@@ -16,6 +16,11 @@ jobs:
 
       - name: Sonarless curl install test
         run: |
+          if git rev-parse --is-inside-work-tree > /dev/null 2>&1; then
+            echo "You are inside a Git repository."
+          else
+            echo "You are not inside a Git repository."
+          fi
           echo "Current branch: ${GITHUB_REF#refs/heads/}"
           export BRANCH=$(git branch --show-current)
           curl -s "https://raw.githubusercontent.com/gitricko/sonarless/${BRANCH}/install.sh" | bash
