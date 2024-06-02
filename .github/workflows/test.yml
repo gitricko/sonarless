@@ -16,7 +16,9 @@ jobs:
 
       - name: Sonarless curl install test
         run: |
-          curl -s "https://raw.githubusercontent.com/gitricko/sonarless/$(git branch --show-current)/install.sh" | bash
+          git branch --show-current
+          export BRANCH=$(git branch --show-current)
+          curl -s "https://raw.githubusercontent.com/gitricko/sonarless/${BRANCH}/install.sh" | bash
 
       - name: Sonarless help
         run: |
