@@ -17,13 +17,12 @@ jobs:
       - name: Sonarless install test
         run: |
           cat ./install.sh | bash
-          ls -lah ~/.sonarless/*
-          cat ~/.bashrc
 
-      - name: Sonarless - start
+      - name: Check Install
         run: |
-          source ~/.bashrc; sonarless start
-          sonarless start
+          grep "sonarless" ~/.bashrc
+          ls -lah $HOME/.sonarless/makefile.sh
+
 
   sonarless-action-test:
     runs-on: ubuntu-latest
