@@ -150,19 +150,21 @@ function uninstall() {
 
     docker-clean
     
-    [[ -s "${sonarless_bashrc}" ]] && grep 'sonarless' ${sonarless_bashrc}
-    if [ $? -eq 0 ];then 
-        temp_file=$(mktemp)
-        sed '/sonarless/{x;d;}' ${sonarless_bashrc} > ${temp_file}
-        mv ${temp_file} ${sonarless_bashrc}
-    fi
+    # Do not remove alias in rc files
+    
+    # [[ -s "${sonarless_bashrc}" ]] && grep 'sonarless' ${sonarless_bashrc}
+    # if [ $? -eq 0 ];then 
+    #     temp_file=$(mktemp)
+    #     sed '/sonarless/{x;d;}' ${sonarless_bashrc} > ${temp_file}
+    #     mv ${temp_file} ${sonarless_bashrc}
+    # fi
 
-    [[ -s "${sonarless_zshrc}" ]] && grep 'sonarless' ${sonarless_zshrc}
-    if [ $? -eq 0 ];then 
-        temp_file=$(mktemp)
-        sed '/sonarless/{x;d;}' ${sonarless_zshrc} > ${temp_file}
-        mv ${temp_file} ${sonarless_zshrc}
-    fi
+    # [[ -s "${sonarless_zshrc}" ]] && grep 'sonarless' ${sonarless_zshrc}
+    # if [ $? -eq 0 ];then 
+    #     temp_file=$(mktemp)
+    #     sed '/sonarless/{x;d;}' ${sonarless_zshrc} > ${temp_file}
+    #     mv ${temp_file} ${sonarless_zshrc}
+    # fi
 
     rm -rf ${HOME}/.${CLI_NAME}
 
