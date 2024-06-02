@@ -39,8 +39,8 @@ function help() {
     echo ''
     echo "${CLI_NAME} help        : this help menu"
     echo "${CLI_NAME} scan        : to scan all code in current directory. Sonarqube Service will be started"
-    echo "${CLI_NAME} results     : show scan results and download the metric json in current directory"
-    echo "${CLI_NAME} start       : start SonarQube Service docker instance"
+    echo "${CLI_NAME} results     : show scan results and download the metric json (sonar-metrics.json) in current directory"
+    echo "${CLI_NAME} start       : start SonarQube Service docker instance with creds: admin/sonarless"
     echo "${CLI_NAME} stop        : stop SonarQube Service docker instance"
     echo "${CLI_NAME} uninstall   : uninstall all scriptlets and docker instances"
     echo "${CLI_NAME} docker-clean: remove all docker instances. Note any history for sonar will be lost as docker instance are remove"
@@ -74,14 +74,14 @@ function start() {
 
     # 2. Reset admin password to sonar
     curl -s -X POST -u "admin:admin" \
-        -d "login=admin&previousPassword=admin&password=sonar" \
+        -d "login=admin&previousPassword=admin&password=sonarless" \
         http://localhost:9000/api/users/change_password
     echo "Local sonarqube URI: http://localhost:9000" 
 
     # 3. Create default project and set default fav
-    curl -s -u "admin:sonar" -X POST "http://localhost:9000/api/projects/create?name=${SONAR_PROJECT_NAME}&project=${SONAR_PROJECT_NAME}" | jq
-    curl -s -u "admin:sonar" -X POST "http://localhost:9000/api/users/set_homepage?type=PROJECT&component=${SONAR_PROJECT_NAME}"
-    echo "Credentials: admin/sonar"
+    curl -s -u "admin:sonarless" -X POST "http://localhost:9000/api/projects/create?name=${SONAR_PROJECT_NAME}&project=${SONAR_PROJECT_NAME}" | jq
+    curl -s -u "admin:sonarless" -X POST "http://localhost:9000/api/users/set_homepage?type=PROJECT&component=${SONAR_PROJECT_NAME}"
+    echo "Credentials: admin/sonarless"
 
 }
 
@@ -99,7 +99,7 @@ function scan() {
     echo "SONAR_SOURCE_PATH: ${SONAR_SOURCE_PATH}"
 
     # 2. Create token and scan
-    export SONAR_TOKEN=$(curl -s -X POST -u "admin:sonar" "http://${DOCKER_SONAR_IP}:9000/api/user_tokens/generate?name=$(date +%s%N)" | jq -r .token)
+    export SONAR_TOKEN=$(curl -s -X POST -u "admin:sonarless" "http://${DOCKER_SONAR_IP}:9000/api/user_tokens/generate?name=$(date +%s%N)" | jq -r .token)
     docker run --rm \
         -e SONAR_HOST_URL="http://${DOCKER_SONAR_IP}:9000"  \
         -e SONAR_TOKEN=${SONAR_TOKEN} \
@@ -112,7 +112,7 @@ function scan() {
     for i in $(seq 1 120); do
         sleep 1
         printf .
-        status_value=$(curl -s -u "admin:sonar" http://${DOCKER_SONAR_IP}:9000/api/qualitygates/project_status?projectKey=${SONAR_PROJECT_NAME} | jq -r .projectStatus.status)
+        status_value=$(curl -s -u "admin:sonarless" http://${DOCKER_SONAR_IP}:9000/api/qualitygates/project_status?projectKey=${SONAR_PROJECT_NAME} | jq -r .projectStatus.status)
         # Checking if the status value is not "NONE"
         if [[ "$status_value" != "NONE" ]]; then
             printf "\nSonarQube scanning done\n"
@@ -124,7 +124,7 @@ function scan() {
 
 function results() {
     # use this params to collect stats
-    curl -s -u "admin:sonar" "http://localhost:9000/api/measures/component?component=${SONAR_PROJECT_NAME}&metricKeys=bugs,vulnerabilities,code_smells,quality_gate_details,violations,duplicated_lines_density,ncloc,coverage,reliability_rating,security_rating,security_review_rating,sqale_rating,security_hotspots,open_issues" \
+    curl -s -u "admin:sonarless" "http://localhost:9000/api/measures/component?component=${SONAR_PROJECT_NAME}&metricKeys=bugs,vulnerabilities,code_smells,quality_gate_details,violations,duplicated_lines_density,ncloc,coverage,reliability_rating,security_rating,security_review_rating,sqale_rating,security_hotspots,open_issues" \
         | jq -r > ${SONAR_GITROOT}/${SONAR_METRICS_PATH}
     cat ${SONAR_GITROOT}/${SONAR_METRICS_PATH}
     echo "Scan results written to  ${SONAR_GITROOT}/${SONAR_METRICS_PATH}"

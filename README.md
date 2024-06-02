@@ -100,7 +100,7 @@ To understand the sub-command, just run `sonarless help`
 
 To start scanning your code, just run `sonarless scan`, and all code in the current directory will be uploaded for scanning.
 
-When the scan is done, just login webui into your local personal instance of sonarqube via [http://localhost:9000](http://localhost:9000) to get your results and improve your code. The default password for `admin` is `sonar`
+When the scan is done, just login webui into your local personal instance of sonarqube via [http://localhost:9000](http://localhost:9000) to get your results and improve your code. The default password for `admin` is `sonarless`
 
 To generate `sonar-metrics.json` metrics, just run `sonarless results` and the file will be generated in your git-root
 
