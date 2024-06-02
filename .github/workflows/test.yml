@@ -20,7 +20,7 @@ jobs:
 
       - name: Sonarless - start
         run: |
-          alias sonarless='$HOME/.sonarless/makefile.sh' 
+          source ~/.bashrc 
           sonarless start
 
   sonarless-action-test:
