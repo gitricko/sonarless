@@ -43,17 +43,19 @@ else
 fi
 export SONARLESS_DIR
 export SONARLESS_CLI_NAME='sonarless'
+export SONARLESS_BRANCH_NAME=${SONARLESS_BRANCH_NAME:-"installation"}
+
+# So that my GHA will work for testing
+if git rev-parse --is-inside-work-tree > /dev/null 2>&1; then
+  export SONARLESS_BRANCH_NAME=$(git branch --show-current)
+else
+  export SONARLESS_BRANCH_NAME="main"
+fi
 
 # Local variables
 sonarless_bashrc="${HOME}/.bashrc"
 sonarless_zshrc="${HOME}/.zshrc"
 
-# sonarless_init_snippet=$( cat << EOF
-# #THIS MUST BE AT THE END OF THE FILE FOR SONARLESS TO WORK!!!
-# export SONARLESS_DIR="$SONARLESS_DIR_RAW"
-# [[ -s "${SONARLESS_DIR_RAW}/bin/sonarless-init.sh" ]] && source "${SONARLESS_DIR_RAW}/bin/sonarless-init.sh"
-# EOF
-# )
 
 echo ''
 echo '                                               _ '                
@@ -133,12 +135,10 @@ echo "Installing Sonarless helper scripts..."
 # Create directory structure
 mkdir -p "${SONARLESS_DIR}"
 
-# Download the Makefile and makefile.sh
-# curl -o "$INSTALL_DIR/makefile.sh" "$MAKEFILE_SH_URL"
-# chmod +x "$INSTALL_DIR/makefile.sh"
+# Download makefile.sh
 echo "* Downloading..."
-# curl --fail --location --progress-bar "${SDKMAN_SERVICE}/broker/download/sdkman/install/${SDKMAN_VERSION}/${SDKMAN_PLATFORM}" > "$sdkman_zip_file"
-cp makefile.sh ${SONARLESS_DIR}
+curl --fail --location --progress-bar "https://raw.githubusercontent.com/gitricko/sonarless/${SONARLESS_BRANCH_NAME}/makefile.sh" > "${SONARLESS_DIR}/makefile.sh"
+chmod +x ${SONARLESS_DIR}/makefile.sh
 
 set +e
 # Create alias in ~/.bashrc ~/.zshrc if available

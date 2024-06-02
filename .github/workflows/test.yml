@@ -14,9 +14,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Sonarless CLI test
+      - name: Sonarless curl install test
         run: |
-          echo pass
+          curl -s "https://raw.githubusercontent.com/gitricko/sonarless/$(git branch --show-current)/install.sh" | bash
+
+      - name: Sonarless help
+        run: |
+          sonarless help
 
   sonarless-action-test:
     runs-on: ubuntu-latest
