@@ -32,8 +32,8 @@ echo_failed_command() {
 trap echo_failed_command EXIT
 
 # Global variables
-export SONARLESS_VERSION="0"
-export SONARLESS_SOURCES="https://raw.githubusercontent.com/gitricko/sonarless/installation/install.sh"  # URL where makefile.sh is hosted
+# export SONARLESS_VERSION="0"
+# export SONARLESS_SOURCES="https://raw.githubusercontent.com/gitricko/sonarless/installation/install.sh"  # URL where makefile.sh is hosted
 
 if [ -z "$SONARLESS_DIR" ]; then
     SONARLESS_DIR="$HOME/.sonarless"
@@ -43,14 +43,7 @@ else
 fi
 export SONARLESS_DIR
 export SONARLESS_CLI_NAME='sonarless'
-export SONARLESS_BRANCH_NAME=${SONARLESS_BRANCH_NAME:-"installation"}
-
-# So that my GHA will work for testing
-if git rev-parse --is-inside-work-tree > /dev/null 2>&1; then
-  export SONARLESS_BRANCH_NAME=$(git branch --show-current)
-else
-  export SONARLESS_BRANCH_NAME="main"
-fi
+export SONARLESS_BRANCH_NAME=${SONARLESS_BRANCH_NAME:-"main"}
 
 # Local variables
 sonarless_bashrc="${HOME}/.bashrc"
