@@ -1,6 +1,6 @@
 [![Test](https://github.com/gitricko/sonarless/actions/workflows/test.yml/badge.svg)](https://github.com/gitricko/sonarless/actions/workflows/test.yml)
 
-# Sonarless v0
+# Sonarless v1
 
 This action and its developer friendly helper scripts enable sonarqube scanning for your repository without a need of a dedicated hosted sonarqube server. It boots up a sonarqube docker instance and enable developers to scan checkout code and give a metric json so that you can check the quality of the code.
 
@@ -12,7 +12,7 @@ Please refer to the [release page](https://github.com/gitricko/sonarless/release
 
 <!-- start usage -->
 ```yaml
-- uses: gitricko/sonarless@v0
+- uses: gitricko/sonarless@v1
   with:
     # Folder path to scan from git-root
     # Default: . 
@@ -49,7 +49,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Sonarless Scan
-        uses: gitricko/sonarless@v0
+        uses: gitricko/sonarless@v1
 ```
 
 ## Scan particular folder from git root directory
@@ -63,7 +63,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Sonarless Scan
-        uses: gitricko/sonarless@v0
+        uses: gitricko/sonarless@v1
         with:
           sonar-source-path: 'src'
 ```
@@ -79,7 +79,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Sonarless Scan
-        uses: gitricko/sonarless@v0
+        uses: gitricko/sonarless@v1
         with:
           sonar-source-path: 'src'
           sonar-metrics-path: './sonar-mymetrics.json'
