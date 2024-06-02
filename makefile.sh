@@ -74,7 +74,7 @@ function stop() {
 }
 
 function scan() {
-    sonar-start
+    start
 
     # 1. Get internal IP for Sonar-Server
     export DOCKER_SONAR_IP=$(docker inspect ${SONAR_INSTANCE_NAME} | jq -r '.[].NetworkSettings.IPAddress')
