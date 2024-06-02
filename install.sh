@@ -32,8 +32,7 @@ echo_failed_command() {
 trap echo_failed_command EXIT
 
 # Global variables
-# export SONARLESS_VERSION="0"
-# export SONARLESS_SOURCES="https://raw.githubusercontent.com/gitricko/sonarless/installation/install.sh"  # URL where makefile.sh is hosted
+export SONARLESS_SOURCES="https://raw.githubusercontent.com/gitricko/sonarless/main/makefile.sh"  # URL where makefile.sh is hosted
 
 if [ -z "$SONARLESS_DIR" ]; then
     SONARLESS_DIR="$HOME/.sonarless"
@@ -43,7 +42,6 @@ else
 fi
 export SONARLESS_DIR
 export SONARLESS_CLI_NAME='sonarless'
-export SONARLESS_BRANCH_NAME=${SONARLESS_BRANCH_NAME:-"main"}
 
 # Local variables
 sonarless_bashrc="${HOME}/.bashrc"
@@ -130,7 +128,7 @@ mkdir -p "${SONARLESS_DIR}"
 
 # Download makefile.sh
 echo "* Downloading..."
-curl --fail --location --progress-bar "https://raw.githubusercontent.com/gitricko/sonarless/${SONARLESS_BRANCH_NAME}/makefile.sh" > "${SONARLESS_DIR}/makefile.sh"
+curl --fail --location --progress-bar "${SONAR_SOURCES}" > "${SONARLESS_DIR}/makefile.sh"
 chmod +x ${SONARLESS_DIR}/makefile.sh
 
 set +e
