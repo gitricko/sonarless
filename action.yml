@@ -28,7 +28,7 @@ runs:
       shell: bash
 
     - name: Scanning
-      run: ${{ github.action_path }}/makefile.sh sonar-scan
+      run: ${{ github.action_path }}/makefile.sh scan
       shell: bash
       env:
         SONAR_PROJECT_NAME: ${{inputs.sonar-project-name}}
@@ -38,7 +38,7 @@ runs:
         SONAR_GITROOT: ${{ github.workspace }}
 
     - name: Scan Results
-      run: ${{ github.action_path }}/makefile.sh sonar-results
+      run: ${{ github.action_path }}/makefile.sh results
       shell: bash
       env:
         SONAR_PROJECT_NAME: ${{inputs.sonar-project-name}}

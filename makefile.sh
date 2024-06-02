@@ -1,6 +1,5 @@
 #!/bin/bash
 
-export SONAR_CLI_VERSION=${SONAR_CLI_VERSION:-"5.0.1.3006"}
 export SONAR_INSTANCE_NAME=${SONAR_INSTANCE_NAME:-"sonar-server"}
 export SONAR_PROJECT_NAME=${SONAR_PROJECT_NAME:-"$(basename `pwd`)"}
 export SONAR_PROJECT_KEY=${SONAR_PROJECT_KEY:-"$(basename `pwd`)"}
@@ -8,12 +7,13 @@ export SONAR_GITROOT=${SONAR_GITROOT:-"$(pwd)"}
 export SONAR_SOURCE_PATH=${SONAR_SOURCE_PATH:-"."}
 export SONAR_METRICS_PATH=${SONAR_METRICS_PATH:-"./sonar-metrics.json"}
 
+export DOCKER_SONAR_CLI=sonarsource/sonar-scanner-cli
+export DOCKER_SONAR_SERVER=sonarqube
 
 function uri_wait(){
     set +e
     URL=$1
     SLEEP_INT=${2:-60}
-    printf "Waiting for URI - ${URL} to be http-200 "
     for i in $(seq 1 ${SLEEP_INT}); do
         sleep 1
         printf .
@@ -26,23 +26,24 @@ function uri_wait(){
     return ${EXIT_CODE}    
 }
 
-function sonar-help() {
+function help() {
     echo "help"
 }
 
-function sonar-start() {
+function start() {
     docker-deps-get
 
-    docker inspect ${SONAR_INSTANCE_NAME} 2>&1 > /dev/null 
+    docker inspect ${SONAR_INSTANCE_NAME} >/dev/null 2>&1
     if [[ $? -ne 0 ]]; then
-        docker run -d --name ${SONAR_INSTANCE_NAME} -p 9000:9000 sonarqube
+        docker run -d --name ${SONAR_INSTANCE_NAME} -p 9000:9000 sonarqube 2>&1 > /dev/null 
     else
         docker start ${SONAR_INSTANCE_NAME} 2>&1 > /dev/null 
     fi
 
     # 1. Wait for services to be up
+    printf "Booting SonarQube docker instance "
     uri_wait http://localhost:9000 60
-    printf 'Waiting for sonarqube server to be up ' 
+    printf 'Waiting for SonarQube service availability ' 
     for i in $(seq 1 180); do
         sleep 1
         printf .
@@ -68,7 +69,11 @@ function sonar-start() {
 
 }
 
-function sonar-scan() {
+function stop() {
+    docker stop ${SONAR_INSTANCE_NAME} >/dev/null 2>&1 && echo "Local SonarQube has been stopped"
+}
+
+function scan() {
     sonar-start
 
     # 1. Get internal IP for Sonar-Server
@@ -95,28 +100,31 @@ function sonar-scan() {
         # Checking if the status value is not "NONE"
         if [[ "$status_value" != "NONE" ]]; then
             printf "\nSonarQube scanning done\n"
-            printf "Use webui or 'make sonar-results' to get scan outputs\n"
+            printf "Use webui http://localhost:9000 (admin/sonar) or 'sonarless results' to get scan outputs\n"
             break
         fi
     done
 }
 
-function sonar-results() {
+function results() {
     # use this params to collect stats
     curl -s -u "admin:sonar" "http://localhost:9000/api/measures/component?component=${SONAR_PROJECT_NAME}&metricKeys=bugs,vulnerabilities,code_smells,quality_gate_details,violations,duplicated_lines_density,ncloc,coverage,reliability_rating,security_rating,security_review_rating,sqale_rating,security_hotspots,open_issues" \
         | jq -r > ${SONAR_GITROOT}/${SONAR_METRICS_PATH}
     cat ${SONAR_GITROOT}/${SONAR_METRICS_PATH}
+    echo "Scan results written to  ${SONAR_GITROOT}/${SONAR_METRICS_PATH}"
 }
 
 function docker-deps-get() {
-	docker pull sonarsource/sonar-scanner-cli
-	docker pull sonarqube
+	( docker image inspect ${DOCKER_SONAR_SERVER} >/dev/null 2>&1 || echo "Downloading SonarQube..."; docker pull ${DOCKER_SONAR_SERVER} >/dev/null 2>&1 ) &
+    ( docker image inspect ${DOCKER_SONAR_CLI} >/dev/null 2>&1 || echo "Downloading Sonar CLI..."; docker pull ${DOCKER_SONAR_CLI} >/dev/null 2>&1 ) &
+    wait
 }
 
 function docker-clean() {
     docker rm -f ${SONAR_INSTANCE_NAME}
-    docker system prune -fa
-    docker volume prune -fa
+    docker image rm -f ${DOCKER_SONAR_CLI} ${DOCKER_SONAR_SERVER}
+    docker image prune -f
+    docker volume prune -f
 }
 
 $*
