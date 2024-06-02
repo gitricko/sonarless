@@ -18,9 +18,10 @@ jobs:
         run: |
           cat ./install.sh | bash
 
-      - name: Sonarless help
+      - name: Sonarless - start
         run: |
-          sonarless help
+          alias sonarless='$HOME/.sonarless/makefile.sh' 
+          sonarless start
 
   sonarless-action-test:
     runs-on: ubuntu-latest
