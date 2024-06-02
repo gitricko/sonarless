@@ -22,7 +22,7 @@ jobs:
 
       - name: Sonarless - start
         run: |
-          source ~/.bashrc 
+          source ~/.bashrc; sonarless start
           sonarless start
 
   sonarless-action-test:
