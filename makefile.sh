@@ -1,5 +1,14 @@
 #!/bin/bash
 
+export SONAR_CLI_VERSION=${SONAR_CLI_VERSION:-"5.0.1.3006"}
+export SONAR_INSTANCE_NAME=${SONAR_INSTANCE_NAME:-"sonar-server"}
+export SONAR_PROJECT_NAME=${SONAR_PROJECT_NAME:-"$(basename `pwd`)"}
+export SONAR_PROJECT_KEY=${SONAR_PROJECT_KEY:-"$(basename `pwd`)"}
+export SONAR_GITROOT=${SONAR_GITROOT:-"$(pwd)"}
+export SONAR_SOURCE_PATH=${SONAR_SOURCE_PATH:-"."}
+export SONAR_METRICS_PATH=${SONAR_METRICS_PATH:-"./sonar-metrics.json"}
+
+
 function uri_wait(){
     set +e
     URL=$1
@@ -17,7 +26,13 @@ function uri_wait(){
     return ${EXIT_CODE}    
 }
 
+function sonar-help() {
+    echo "help"
+}
+
 function sonar-start() {
+    docker-deps-get
+
     docker inspect ${SONAR_INSTANCE_NAME} 2>&1 > /dev/null 
     if [[ $? -ne 0 ]]; then
         docker run -d --name ${SONAR_INSTANCE_NAME} -p 9000:9000 sonarqube
@@ -54,6 +69,8 @@ function sonar-start() {
 }
 
 function sonar-scan() {
+    sonar-start
+
     # 1. Get internal IP for Sonar-Server
     export DOCKER_SONAR_IP=$(docker inspect ${SONAR_INSTANCE_NAME} | jq -r '.[].NetworkSettings.IPAddress')
 
@@ -89,6 +106,17 @@ function sonar-results() {
     curl -s -u "admin:sonar" "http://localhost:9000/api/measures/component?component=${SONAR_PROJECT_NAME}&metricKeys=bugs,vulnerabilities,code_smells,quality_gate_details,violations,duplicated_lines_density,ncloc,coverage,reliability_rating,security_rating,security_review_rating,sqale_rating,security_hotspots,open_issues" \
         | jq -r > ${SONAR_GITROOT}/${SONAR_METRICS_PATH}
     cat ${SONAR_GITROOT}/${SONAR_METRICS_PATH}
+}
+
+function docker-deps-get() {
+	docker pull sonarsource/sonar-scanner-cli
+	docker pull sonarqube
+}
+
+function docker-clean() {
+    docker rm -f ${SONAR_INSTANCE_NAME}
+    docker system prune -fa
+    docker volume prune -fa
 }
 
 $*
