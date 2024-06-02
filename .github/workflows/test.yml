@@ -8,11 +8,27 @@ on:
       - releases/*
 
 jobs:
+  sonarless-cli-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Sonarless install test
+        run: |
+          cat ./install.sh | bash
+
+      - name: Check Install
+        run: |
+          grep "sonarless" ~/.bashrc
+          ls -lah $HOME/.sonarless/makefile.sh
+
+
   sonarless-action-test:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Sonarless Scan
         uses: ./

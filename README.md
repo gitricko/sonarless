@@ -1,14 +1,18 @@
 [![Test](https://github.com/gitricko/sonarless/actions/workflows/test.yml/badge.svg)](https://github.com/gitricko/sonarless/actions/workflows/test.yml)
 
-# Sonarless v0
+# Sonarless v1
 
 This action and its developer friendly helper scripts enable sonarqube scanning for your repository without a need of a dedicated hosted sonarqube server. It boots up a sonarqube docker instance and enable developers to scan checkout code and give a metric json so that you can check the quality of the code.
+
+# What's new
+
+Please refer to the [release page](https://github.com/gitricko/sonarless/releases/latest) for the latest release notes.
 
 # Usage
 
 <!-- start usage -->
 ```yaml
-- uses: gitricko/sonarless@v0
+- uses: gitricko/sonarless@v1
   with:
     # Folder path to scan from git-root
     # Default: . 
@@ -45,7 +49,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Sonarless Scan
-        uses: gitricko/sonarless@v0
+        uses: gitricko/sonarless@v1
 ```
 
 ## Scan particular folder from git root directory
@@ -59,7 +63,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Sonarless Scan
-        uses: gitricko/sonarless@v0
+        uses: gitricko/sonarless@v1
         with:
           sonar-source-path: 'src'
 ```
@@ -75,7 +79,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Sonarless Scan
-        uses: gitricko/sonarless@v0
+        uses: gitricko/sonarless@v1
         with:
           sonar-source-path: 'src'
           sonar-metrics-path: './sonar-mymetrics.json'
@@ -89,13 +93,18 @@ jobs:
 ```
 # Use Sonarless in your Local Dev
 
-Just copy 3 files from this repository. `Makefile` and `makefile.sh` in to your git-root.
+To install automation scriptlets, paste and run the following in a terminal:
+>  `curl -s "https://raw.githubusercontent.com/gitricko/sonarless/main/install.sh" | bash`
 
-To start scanning your code, just run `make sonar-scan`. When the scan is done, just login webui into your local personal instance of sonarqube via [http://localhost:9000](http://localhost:9000) to get your results and where you can improve your code. The default password for `admin` is `sonar`
+To understand the sub-command, just run `sonarless help`
 
-If you want to get the metrics file, run `make sonar-results` and `sonar-metrics.json` will be generated in your git-root
+To start scanning your code, just run `sonarless scan`, and all code in the current directory will be uploaded for scanning.
 
-Use `make docker-clean` to clean up your sonar instance
+When the scan is done, just login webui into your local personal instance of sonarqube via [http://localhost:9000](http://localhost:9000) to get your results and improve your code. The default password for `admin` is `sonarless`
+
+To generate `sonar-metrics.json` metrics, just run `sonarless results` and the file will be generated in your git-root
+
+To clean up your sonar instance, just run `sonarless docker-clean`. SonarQube docker instance will be stop and all images removed.
 
 This small scriptlet works perfectly with Github CodeSpace
 

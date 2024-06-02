@@ -1,6 +1,6 @@
-name: "Sonar-less Code Scan"
-description: "SonarQube Code Scan without a hosted SonarQube Server"
-author: "GitRicko"
+name: "Sonarless Code Scan"
+description: "SonarQube Scan GitHub Action without a dedicated hosted SonarQube Server"
+author: "gitricko"
 
 inputs:
   sonar-project-name:
@@ -24,11 +24,11 @@ runs:
   using: "composite"
   steps:
     - name: Get Docker Deps
-      run: make -C ${{ github.action_path }} sonar-docker-deps-get
+      run: ${{ github.action_path }}/makefile.sh docker-deps-get
       shell: bash
 
     - name: Scanning
-      run: make -C ${{ github.action_path }} sonar-scan
+      run: ${{ github.action_path }}/makefile.sh scan
       shell: bash
       env:
         SONAR_PROJECT_NAME: ${{inputs.sonar-project-name}}
@@ -38,7 +38,7 @@ runs:
         SONAR_GITROOT: ${{ github.workspace }}
 
     - name: Scan Results
-      run: make -C ${{ github.action_path }} sonar-results
+      run: ${{ github.action_path }}/makefile.sh results
       shell: bash
       env:
         SONAR_PROJECT_NAME: ${{inputs.sonar-project-name}}
