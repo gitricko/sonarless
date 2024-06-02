@@ -128,7 +128,7 @@ mkdir -p "${SONARLESS_DIR}"
 
 # Download makefile.sh
 echo "* Downloading..."
-curl --fail --location --progress-bar "${SONAR_SOURCES}" > "${SONARLESS_DIR}/makefile.sh"
+curl --fail --location --progress-bar "${SONARLESS_SOURCES}" > "${SONARLESS_DIR}/makefile.sh"
 chmod +x ${SONARLESS_DIR}/makefile.sh
 
 set +e
