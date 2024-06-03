@@ -96,7 +96,36 @@ jobs:
 To install automation scriptlets, paste and run the following in a terminal:
 >  `curl -s "https://raw.githubusercontent.com/gitricko/sonarless/main/install.sh" | bash`
 
-To understand the sub-command, just run `sonarless help`
+```ssh
+                                               _ 
+               ___   ___   _ __    __ _  _ __ | |  ___  ___  ___ 
+              / __| / _ \ | "_ \  / _` || "__|| | / _ \/ __|/ __| 
+              \__ \| (_) || | | || (_| || |   | ||  __/\__ \\__ \ 
+              |___/ \___/ |_| |_| \__,_||_|   |_| \___||___/|___/ 
+
+
+                                                                        Now attempting installation...
+
+Looking for a previous installation of SONARLESS...
+Looking for docker...
+Looking for jq...
+Looking for sed...
+Installing Sonarless helper scripts...
+* Downloading...
+
+######################################################################## 100.0%
+
+Please open a new terminal, or run the following in the existing one:
+
+    alias sonarless='/home/runner/.sonarless/makefile.sh' 
+
+Then issue the following command:
+
+    sonarless help
+
+Enjoy!!!
+```
+To understand the sub-commands, just run `sonarless help`
 
 To start scanning your code, just run `sonarless scan`, and all code in the current directory will be uploaded for scanning.
 

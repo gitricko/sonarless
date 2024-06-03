@@ -22,6 +22,7 @@ jobs:
         run: |
           grep "sonarless" ~/.bashrc
           ls -lah $HOME/.sonarless/makefile.sh
+          $HOME/.sonarless/makefile.sh help
 
       - name: Sonarless uninstall test
         run: |
