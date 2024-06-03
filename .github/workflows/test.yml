@@ -28,8 +28,13 @@ jobs:
           $HOME/.sonarless/makefile.sh uninstall
 
       - name: Check Uninstall
-        run: |          
-          ls -lah $HOME/.sonarless/makefile.sh
+        run: |
+          if [[ -d "$HOME/.sonarless" ]]; then
+            echo "sonarless scriptlet is not uninstalled - bad"
+            exit 1
+          else
+            echo "sonarless scriptlet removed - good"
+          fi
 
   sonarless-action-test:
     runs-on: ubuntu-latest
