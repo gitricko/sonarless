@@ -47,7 +47,7 @@ jobs:
         run: |
           git clone https://github.com/SonarSource/sonar-scanner-npm.git
           pwd
-          ls -lahd 
+          ls -lah
 
       - name: Sonarless Scan
         uses: ./
