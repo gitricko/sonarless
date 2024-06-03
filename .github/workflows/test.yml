@@ -29,7 +29,13 @@ jobs:
 
       - name: Check Uninstall
         run: |
-          grep "sonarless" ~/.bashrc
+          if ! grep -q "$sonarless" ~/.bashrc; then
+            echo "alias is deleted - good"
+          else
+            echo "alias is NOT deleted - fail"
+            exit 1
+          fi
+          
           ls -lah $HOME/.sonarless/makefile.sh
 
   sonarless-action-test:
