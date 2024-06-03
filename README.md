@@ -96,13 +96,41 @@ jobs:
 To install automation scriptlets, paste and run the following in a terminal:
 >  `curl -s "https://raw.githubusercontent.com/gitricko/sonarless/main/install.sh" | bash`
 
-To understand the sub-command, just run `sonarless help`
+```ssh
+                                               _ 
+               ___   ___   _ __    __ _  _ __ | |  ___  ___  ___ 
+              / __| / _ \ | "_ \  / _` || "__|| | / _ \/ __|/ __| 
+              \__ \| (_) || | | || (_| || |   | ||  __/\__ \\__ \ 
+              |___/ \___/ |_| |_| \__,_||_|   |_| \___||___/|___/ 
 
-To start scanning your code, just run `sonarless scan`, and all code in the current directory will be uploaded for scanning.
 
-When the scan is done, just login webui into your local personal instance of sonarqube via [http://localhost:9000](http://localhost:9000) to get your results and improve your code. The default password for `admin` is `sonarless`
+                                                                        Now attempting installation...
 
-To generate `sonar-metrics.json` metrics, just run `sonarless results` and the file will be generated in your git-root
+Looking for a previous installation of SONARLESS...
+Looking for docker...
+Looking for jq...
+Looking for sed...
+Installing Sonarless helper scripts...
+* Downloading...
+
+######################################################################## 100.0%
+
+Please open a new terminal, or run the following in the existing one:
+
+    alias sonarless='/home/runner/.sonarless/makefile.sh' 
+
+Then issue the following command:
+
+    sonarless help
+
+Enjoy!!!
+```
+To understand the sub-commands, just run `sonarless help`
+
+Usually, you only need to know 2 sub-commands
+- `sonarless scan`: to start scanning your code in the current directory will be uploaded for scanning. When the scan is done, just login webui into your local personal instance of sonarqube via [http://localhost:9000](http://localhost:9000) to get details from SonarQube. The default password for `admin` is `sonarless`
+
+- `sonarless results`: to generate `sonar-metrics.json` metrics file in your current directory
 
 To clean up your sonar instance, just run `sonarless docker-clean`. SonarQube docker instance will be stop and all images removed.
 

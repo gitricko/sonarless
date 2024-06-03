@@ -38,12 +38,16 @@ function help() {
     echo ''
     echo ''
     echo "${CLI_NAME} help        : this help menu"
+    echo ''
     echo "${CLI_NAME} scan        : to scan all code in current directory. Sonarqube Service will be started"
     echo "${CLI_NAME} results     : show scan results and download the metric json (sonar-metrics.json) in current directory"
+    echo ''
     echo "${CLI_NAME} start       : start SonarQube Service docker instance with creds: admin/sonarless"
     echo "${CLI_NAME} stop        : stop SonarQube Service docker instance"
+    echo ''
     echo "${CLI_NAME} uninstall   : uninstall all scriptlets and docker instances"
-    echo "${CLI_NAME} docker-clean: remove all docker instances. Note any history for sonar will be lost as docker instance are remove"
+    echo "${CLI_NAME} docker-clean: remove all docker instances. Note any scan history will be lost as docker instance are deleted"
+    echo ''
 }
 
 function start() {
@@ -150,19 +154,21 @@ function uninstall() {
 
     docker-clean
     
-    [[ -s "${sonarless_bashrc}" ]] && grep 'sonarless' ${sonarless_bashrc}
-    if [ $? -eq 0 ];then 
-        temp_file=$(mktemp)
-        sed '/sonarless/{x;d;}' ${sonarless_bashrc} > ${temp_file}
-        mv ${temp_file} ${sonarless_bashrc}
-    fi
+    # Do not remove alias in rc files
+    
+    # [[ -s "${sonarless_bashrc}" ]] && grep 'sonarless' ${sonarless_bashrc}
+    # if [ $? -eq 0 ];then 
+    #     temp_file=$(mktemp)
+    #     sed '/sonarless/{x;d;}' ${sonarless_bashrc} > ${temp_file}
+    #     mv ${temp_file} ${sonarless_bashrc}
+    # fi
 
-    [[ -s "${sonarless_zshrc}" ]] && grep 'sonarless' ${sonarless_zshrc}
-    if [ $? -eq 0 ];then 
-        temp_file=$(mktemp)
-        sed '/sonarless/{x;d;}' ${sonarless_zshrc} > ${temp_file}
-        mv ${temp_file} ${sonarless_zshrc}
-    fi
+    # [[ -s "${sonarless_zshrc}" ]] && grep 'sonarless' ${sonarless_zshrc}
+    # if [ $? -eq 0 ];then 
+    #     temp_file=$(mktemp)
+    #     sed '/sonarless/{x;d;}' ${sonarless_zshrc} > ${temp_file}
+    #     mv ${temp_file} ${sonarless_zshrc}
+    # fi
 
     rm -rf ${HOME}/.${CLI_NAME}
 
