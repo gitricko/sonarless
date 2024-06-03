@@ -52,7 +52,7 @@ jobs:
       - name: Sonarless Scan
         uses: ./
         with:
-          sonar-source-path: '.'
+          sonar-source-path: 'sonar-scanner-npm/src'
           sonar-metrics-path: './blahblah.json'
 
       - name: Check Sonar Metrics
