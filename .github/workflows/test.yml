@@ -43,10 +43,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Download Sample Code for Scanning
+        run: |
+          git clone https://github.com/SonarSource/sonar-scanner-npm.git
+
       - name: Sonarless Scan
         uses: ./
         with:
-          sonar-source-path: 'test-src'
+          sonar-source-path: 'sonar-scanner-npm'
           sonar-metrics-path: './blahblah.json'
 
       - name: Check Sonar Metrics
