@@ -46,11 +46,13 @@ jobs:
       - name: Download Sample Code for Scanning
         run: |
           git clone https://github.com/SonarSource/sonar-scanner-npm.git
+          pwd
+          ls -lahd */*
 
       - name: Sonarless Scan
         uses: ./
         with:
-          sonar-source-path: 'sonar-scanner-npm'
+          sonar-source-path: './sonar-scanner-npm'
           sonar-metrics-path: './blahblah.json'
 
       - name: Check Sonar Metrics
