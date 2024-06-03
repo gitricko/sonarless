@@ -127,11 +127,10 @@ Enjoy!!!
 ```
 To understand the sub-commands, just run `sonarless help`
 
-To start scanning your code, just run `sonarless scan`, and all code in the current directory will be uploaded for scanning.
+Usually, you only need to know 2 sub-commands
+- `sonarless scan`: to start scanning your code in the current directory will be uploaded for scanning. When the scan is done, just login webui into your local personal instance of sonarqube via [http://localhost:9000](http://localhost:9000) to get details from SonarQube. The default password for `admin` is `sonarless`
 
-When the scan is done, just login webui into your local personal instance of sonarqube via [http://localhost:9000](http://localhost:9000) to get your results and improve your code. The default password for `admin` is `sonarless`
-
-To generate `sonar-metrics.json` metrics, just run `sonarless results` and the file will be generated in your git-root
+- `sonarless results`: to generate `sonar-metrics.json` metrics file in your current directory
 
 To clean up your sonar instance, just run `sonarless docker-clean`. SonarQube docker instance will be stop and all images removed.
 
