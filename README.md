@@ -37,6 +37,7 @@ Please refer to the [release page](https://github.com/gitricko/sonarless/release
 - [Scan all files from git root directory](#Sonar-scan-all-files-from-git-root-directory)
 - [Scan particular folder from git root directory](#Scan-particular-folder-from-git-root-directory)
 - [Scan code and fail build if metrics is below expectation](#Scan-code-and-fail-build-if-metrics-is-below-expectation)
+- [Options to change local sonarqube server port](#Options-to-change-local-sonarqube-server-port)
 
 ## Sonar scan all files from git root directory
 
@@ -91,6 +92,23 @@ jobs:
           echo "# of vulnerabilities = ${VULN}"
           [ ${VULN} -eq "0" ]
 ```
+
+## Options to change local sonarqube server port
+Just in case your local machine/GHA container need to use the default port of `9234`
+```yaml
+jobs:
+  Sonarless-Scan:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Sonarless Scan
+        uses: gitricko/sonarless@v1
+        with:
+          sonar-instance-port: '1234'
+```
+
 # Use Sonarless in your Local Dev
 
 To install automation scriptlets, paste and run the following in a terminal:
