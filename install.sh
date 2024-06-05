@@ -56,7 +56,7 @@ echo '              \__ \| (_) || | | || (_| || |   | ||  __/\__ \\__ \ '
 echo '              |___/ \___/ |_| |_| \__,_||_|   |_| \___||___/|___/ '
 echo ''
 echo ''
-echo '                                                                        Now attempting installation...'
+echo '                                                     Now attempting installation...'
 echo ''                                                                 
 
 
