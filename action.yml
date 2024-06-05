@@ -19,6 +19,9 @@ inputs:
     description: "SonarQube Metrics JSON Path from Git Root"
     required: true
     default: ./sonar-matrics.json
+  sonar-instance-port:
+    description: "SonarQube Instance Port"
+    required: false
 
 runs:
   using: "composite"
@@ -37,6 +40,7 @@ runs:
         SONAR_PROJECT_KEY: ${{inputs.sonar-project-key}}
         SONAR_SOURCE_PATH: ${{inputs.sonar-source-path}}
         SONAR_METRICS_PATH: ${{inputs.sonar-metrics-path}}
+        SONAR_INSTANCE_PORT: ${{ inputs.sonar-instance-port }}
         SONAR_GITROOT: ${{ github.workspace }}
 
     - name: Scan Results
@@ -47,4 +51,5 @@ runs:
         SONAR_PROJECT_KEY: ${{inputs.sonar-project-key}}
         SONAR_SOURCE_PATH: ${{inputs.sonar-source-path}}
         SONAR_METRICS_PATH: ${{inputs.sonar-metrics-path}}
+        SONAR_INSTANCE_PORT: ${{ inputs.sonar-instance-port }}
         SONAR_GITROOT: ${{ github.workspace }}
