@@ -24,7 +24,9 @@ runs:
   using: "composite"
   steps:
     - name: Get Docker Deps
-      run: ${{ github.action_path }}/makefile.sh docker-deps-get
+      run: |
+        ${{ github.action_path }}/makefile.sh docker-deps-get
+        ${{ github.action_path }}/makefile.sh sonar-ext-get
       shell: bash
 
     - name: Scanning
