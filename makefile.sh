@@ -60,9 +60,9 @@ function start() {
         docker run -d --name ${SONAR_INSTANCE_NAME} -p 9000:9000  \
             -v "${SONAR_EXTENSION_DIR}:/opt/sonarqube/extensions/plugins" \
             -v "${SONAR_EXTENSION_DIR}:/usr/local/bin" \
-            sonarqube
+            sonarqube 2>&1 > /dev/null 
     else
-        docker start ${SONAR_INSTANCE_NAME} 
+        docker start ${SONAR_INSTANCE_NAME} 2>&1 > /dev/null 
     fi
 
     # 1. Wait for services to be up
