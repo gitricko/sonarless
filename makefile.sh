@@ -1,6 +1,7 @@
 #!/bin/bash
 
 export SONAR_INSTANCE_NAME=${SONAR_INSTANCE_NAME:-"sonar-server"}
+export SONAR_INSTANCE_PORT=${SONAR_INSTANCE_PORT:-"9234"}
 export SONAR_PROJECT_NAME=${SONAR_PROJECT_NAME:-"$(basename `pwd`)"}
 export SONAR_PROJECT_KEY=${SONAR_PROJECT_KEY:-"$(basename `pwd`)"}
 export SONAR_GITROOT=${SONAR_GITROOT:-"$(pwd)"}
@@ -57,7 +58,7 @@ function start() {
 
     docker inspect ${SONAR_INSTANCE_NAME} >/dev/null 2>&1
     if [[ $? -ne 0 ]]; then
-        docker run -d --name ${SONAR_INSTANCE_NAME} -p 9000:9000  \
+        docker run -d --name ${SONAR_INSTANCE_NAME} -p ${SONAR_INSTANCE_PORT}:9000  \
             -v "${SONAR_EXTENSION_DIR}:/opt/sonarqube/extensions/plugins" \
             -v "${SONAR_EXTENSION_DIR}:/usr/local/bin" \
             sonarqube 2>&1 > /dev/null 
@@ -67,12 +68,12 @@ function start() {
 
     # 1. Wait for services to be up
     printf "Booting SonarQube docker instance "
-    uri_wait http://localhost:9000 60
+    uri_wait http://localhost:${SONAR_INSTANCE_PORT} 60
     printf 'Waiting for SonarQube service availability ' 
     for i in $(seq 1 180); do
         sleep 1
         printf .
-        status_value=$(curl -s http://localhost:9000/api/system/status | jq -r '.status')
+        status_value=$(curl -s http://localhost:${SONAR_INSTANCE_PORT}/api/system/status | jq -r '.status')
 
         # Check if the status value is "running"
         if [[ "$status_value" == "UP" ]]; then
@@ -84,8 +85,8 @@ function start() {
     # 2. Reset admin password to sonar
     curl -s -X POST -u "admin:admin" \
         -d "login=admin&previousPassword=admin&password=sonarless" \
-        http://localhost:9000/api/users/change_password
-    echo "Local sonarqube URI: http://localhost:9000" 
+        http://localhost:${SONAR_INSTANCE_PORT}/api/users/change_password
+    echo "Local sonarqube URI: http://localhost:${SONAR_INSTANCE_PORT}" 
 
     echo "Credentials: admin/sonarless"
 
@@ -99,8 +100,8 @@ function scan() {
     start
 
     # 0. Create default project and set default fav
-    curl -s -u "admin:sonarless" -X POST "http://localhost:9000/api/projects/create?name=${SONAR_PROJECT_NAME}&project=${SONAR_PROJECT_NAME}" | jq
-    curl -s -u "admin:sonarless" -X POST "http://localhost:9000/api/users/set_homepage?type=PROJECT&component=${SONAR_PROJECT_NAME}"
+    curl -s -u "admin:sonarless" -X POST "http://localhost:${SONAR_INSTANCE_PORT}/api/projects/create?name=${SONAR_PROJECT_NAME}&project=${SONAR_PROJECT_NAME}" | jq
+    curl -s -u "admin:sonarless" -X POST "http://localhost:${SONAR_INSTANCE_PORT}/api/users/set_homepage?type=PROJECT&component=${SONAR_PROJECT_NAME}"
 
     # 1. Get internal IP for Sonar-Server
     export DOCKER_SONAR_IP=$(docker inspect ${SONAR_INSTANCE_NAME} | jq -r '.[].NetworkSettings.IPAddress')
@@ -108,7 +109,7 @@ function scan() {
     echo "SONAR_GITROOT: ${SONAR_GITROOT}"
     echo "SONAR_SOURCE_PATH: ${SONAR_SOURCE_PATH}"
 
-    # 2. Create token and scan
+    # 2. Create token and scan using internal-ip becos of docker to docker communication
     export SONAR_TOKEN=$(curl -s -X POST -u "admin:sonarless" "http://${DOCKER_SONAR_IP}:9000/api/user_tokens/generate?name=$(date +%s%N)" | jq -r .token)
     docker run --rm \
         -e SONAR_HOST_URL="http://${DOCKER_SONAR_IP}:9000"  \
@@ -122,11 +123,11 @@ function scan() {
     for i in $(seq 1 120); do
         sleep 1
         printf .
-        status_value=$(curl -s -u "admin:sonarless" http://${DOCKER_SONAR_IP}:9000/api/qualitygates/project_status?projectKey=${SONAR_PROJECT_NAME} | jq -r .projectStatus.status)
+        status_value=$(curl -s -u "admin:sonarless" http://localhost:${SONAR_INSTANCE_PORT}/api/qualitygates/project_status?projectKey=${SONAR_PROJECT_NAME} | jq -r .projectStatus.status)
         # Checking if the status value is not "NONE"
         if [[ "$status_value" != "NONE" ]]; then
             printf "\nSonarQube scanning done\n"
-            printf "Use webui http://localhost:9000 (admin/sonar) or 'sonarless results' to get scan outputs\n"
+            printf "Use webui http://localhost:${SONAR_INSTANCE_PORT} (admin/sonar) or 'sonarless results' to get scan outputs\n"
             break
         fi
     done
@@ -134,7 +135,7 @@ function scan() {
 
 function results() {
     # use this params to collect stats
-    curl -s -u "admin:sonarless" "http://localhost:9000/api/measures/component?component=${SONAR_PROJECT_NAME}&metricKeys=bugs,vulnerabilities,code_smells,quality_gate_details,violations,duplicated_lines_density,ncloc,coverage,reliability_rating,security_rating,security_review_rating,sqale_rating,security_hotspots,open_issues" \
+    curl -s -u "admin:sonarless" "http://localhost:${SONAR_INSTANCE_PORT}/api/measures/component?component=${SONAR_PROJECT_NAME}&metricKeys=bugs,vulnerabilities,code_smells,quality_gate_details,violations,duplicated_lines_density,ncloc,coverage,reliability_rating,security_rating,security_review_rating,sqale_rating,security_hotspots,open_issues" \
         | jq -r > ${SONAR_GITROOT}/${SONAR_METRICS_PATH}
     cat ${SONAR_GITROOT}/${SONAR_METRICS_PATH}
     echo "Scan results written to  ${SONAR_GITROOT}/${SONAR_METRICS_PATH}"
