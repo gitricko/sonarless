@@ -14,7 +14,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Sonarless install test
+      - name: Sonarless install test - from internet
         run: |
           cp ./install.sh /tmp
           cd /tmp
@@ -32,7 +32,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Sonarless install test
+      - name: Sonarless install test - from git
         run: |
           cat ./install.sh | bash
 
