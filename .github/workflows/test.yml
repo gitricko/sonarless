@@ -16,6 +16,24 @@ jobs:
 
       - name: Sonarless install test
         run: |
+          cp ./install.sh /tmp
+          cd /tmp
+          cat ./install.sh | bash
+
+      - name: Check Install
+        run: |
+          grep "sonarless" ~/.bashrc
+          ls -lah $HOME/.sonarless/makefile.sh
+          $HOME/.sonarless/makefile.sh help
+
+  sonarless-cli-test-from-git:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Sonarless install test
+        run: |
           cat ./install.sh | bash
 
       - name: Check Install
