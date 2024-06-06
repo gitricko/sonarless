@@ -56,7 +56,7 @@ echo '              \__ \| (_) || | | || (_| || |   | ||  __/\__ \\__ \ '
 echo '              |___/ \___/ |_| |_| \__,_||_|   |_| \___||___/|___/ '
 echo ''
 echo ''
-echo '                                                                        Now attempting installation...'
+echo '                                                     Now attempting installation...'
 echo ''                                                                 
 
 
@@ -126,12 +126,19 @@ echo "Installing Sonarless helper scripts..."
 # Create directory structure
 mkdir -p "${SONARLESS_DIR}"
 
-# Download makefile.sh
-echo "* Downloading..."
-curl --fail --location --progress-bar "${SONARLESS_SOURCES}" > "${SONARLESS_DIR}/makefile.sh"
-chmod +x ${SONARLESS_DIR}/makefile.sh
-
 set +e
+# Download makefile.sh depending which env (git or over curl)
+# Check if you are in sonarless git
+[ -d ./.git ] && git remote get-url origin | grep sonarless 2>&1 > /dev/null
+if [ $? -eq 0 ]; then
+	echo "* Copying from local git..."
+	cp -f ./makefile.sh "${SONARLESS_DIR}"
+else
+	echo "* Downloading..."
+	curl --fail --location --progress-bar "${SONARLESS_SOURCES}" > "${SONARLESS_DIR}/makefile.sh"
+	chmod +x ${SONARLESS_DIR}/makefile.sh
+fi
+
 # Create alias in ~/.bashrc ~/.zshrc if available
 [[ -s "${sonarless_bashrc}" ]] && grep 'sonarless' ${sonarless_bashrc}
 if [ $? -ne 0 ];then 

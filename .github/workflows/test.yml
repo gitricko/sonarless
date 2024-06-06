@@ -46,8 +46,9 @@ jobs:
       - name: Sonarless Scan
         uses: ./
         with:
-          sonar-source-path: 'test-src'
+          sonar-source-path: '.'
           sonar-metrics-path: './blahblah.json'
+          sonar-instance-port: '9999'
 
       - name: Check Sonar Metrics
         run: |

@@ -37,6 +37,7 @@ Please refer to the [release page](https://github.com/gitricko/sonarless/release
 - [Scan all files from git root directory](#Sonar-scan-all-files-from-git-root-directory)
 - [Scan particular folder from git root directory](#Scan-particular-folder-from-git-root-directory)
 - [Scan code and fail build if metrics is below expectation](#Scan-code-and-fail-build-if-metrics-is-below-expectation)
+- [Options to change local sonarqube server port](#Options-to-change-local-sonarqube-server-port)
 
 ## Sonar scan all files from git root directory
 
@@ -91,6 +92,23 @@ jobs:
           echo "# of vulnerabilities = ${VULN}"
           [ ${VULN} -eq "0" ]
 ```
+
+## Options to change local sonarqube server port
+Just in case your local machine/GHA container need to use the default port of `9234`
+```yaml
+jobs:
+  Sonarless-Scan:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Sonarless Scan
+        uses: gitricko/sonarless@v1
+        with:
+          sonar-instance-port: '1234'
+```
+
 # Use Sonarless in your Local Dev
 
 To install automation scriptlets, paste and run the following in a terminal:
@@ -128,7 +146,7 @@ Enjoy!!!
 To understand the sub-commands, just run `sonarless help`
 
 Usually, you only need to know 2 sub-commands
-- `sonarless scan`: to start scanning your code in the current directory will be uploaded for scanning. When the scan is done, just login webui into your local personal instance of sonarqube via [http://localhost:9000](http://localhost:9000) to get details from SonarQube. The default password for `admin` is `sonarless`
+- `sonarless scan`: to start scanning your code in the current directory will be uploaded for scanning. When the scan is done, just login webui into your local personal instance of sonarqube via [http://localhost:9234](http://localhost:9234) to get details from SonarQube. The default password for `admin` is `sonarless`
 
 - `sonarless results`: to generate `sonar-metrics.json` metrics file in your current directory
 
