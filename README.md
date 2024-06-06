@@ -1,4 +1,5 @@
 [![Test](https://github.com/gitricko/sonarless/actions/workflows/test.yml/badge.svg)](https://github.com/gitricko/sonarless/actions/workflows/test.yml)
+[![Codacy](https://github.com/gitricko/sonarless/actions/workflows/codacy.yml/badge.svg)](https://github.com/gitricko/sonarless/actions/workflows/codacy.yml)
 
 # Sonarless v1
 
