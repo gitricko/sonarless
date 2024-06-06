@@ -125,8 +125,7 @@ mkdir -p "${SONARLESS_DIR}"
 set +e
 # Download makefile.sh depending which env (git or over curl)
 # Check if you are in sonarless git
-[ -d ./.git ] && git remote get-url origin | grep sonarless > /dev/null 2>&1
-if [ $? -eq 0 ]; then
+if [[ ! -d ./.git ]] || git remote get-url origin | grep -q sonarless; then
 	echo "* Copying from local git..."
 	cp -f ./makefile.sh "${SONARLESS_DIR}"
 else
