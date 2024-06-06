@@ -2,8 +2,8 @@
 
 export SONAR_INSTANCE_NAME=${SONAR_INSTANCE_NAME:-"sonar-server"}
 export SONAR_INSTANCE_PORT=${SONAR_INSTANCE_PORT:-"9234"}
-export SONAR_PROJECT_NAME="${SONAR_PROJECT_NAME:-$(basename $(pwd))}"
-export SONAR_PROJECT_KEY="${SONAR_PROJECT_KEY:-$(basename $(pwd))}"
+export SONAR_PROJECT_NAME="${SONAR_PROJECT_NAME:-$(basename "$(pwd)")}"
+export SONAR_PROJECT_KEY="${SONAR_PROJECT_KEY:-$(basename "$(pwd)")}"
 export SONAR_GITROOT=${SONAR_GITROOT:-"$(pwd)"}
 export SONAR_SOURCE_PATH=${SONAR_SOURCE_PATH:-"."}
 export SONAR_METRICS_PATH=${SONAR_METRICS_PATH:-"./sonar-metrics.json"}

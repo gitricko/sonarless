@@ -135,12 +135,12 @@ else
 fi
 
 # Create alias in ~/.bashrc ~/.zshrc if available
-if [[ ! -s "${sonarless_bashrc}" ]] || ! grep -q 'sonarless' ${sonarless_bashrc} ;then 
-	echo "alias sonarless='$HOME/.sonarless/makefile.sh'" >> ${sonarless_bashrc}
+if [[ ! -s "${sonarless_bashrc}" ]] || ! grep -q 'sonarless' "${sonarless_bashrc}" ;then 
+	echo "alias sonarless='$HOME/.sonarless/makefile.sh'" >> "${sonarless_bashrc}"
 fi
 
-if [[ ! -s "${sonarless_zshrc}" ]] || ! grep -q 'sonarless' ${sonarless_zshrc}; then 
-	echo "alias sonarless='$HOME/.sonarless/makefile.sh'" >> ${sonarless_zshrc}
+if [[ ! -s "${sonarless_zshrc}" ]] || ! grep -q 'sonarless' "${sonarless_zshrc}"; then 
+	echo "alias sonarless='$HOME/.sonarless/makefile.sh'" >> "${sonarless_zshrc}"
 fi
 
 # Dynamically create the alias during installation so that use can use it
