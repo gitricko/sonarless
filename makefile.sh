@@ -7,10 +7,10 @@ export SONAR_PROJECT_KEY="${SONAR_PROJECT_KEY:-$(basename "$(pwd)")}"
 export SONAR_GITROOT=${SONAR_GITROOT:-"$(pwd)"}
 export SONAR_SOURCE_PATH=${SONAR_SOURCE_PATH:-"."}
 export SONAR_METRICS_PATH=${SONAR_METRICS_PATH:-"./sonar-metrics.json"}
-export SONAR_EXTENSION_DIR=/tmp/sonarless-ext
+export SONAR_EXTENSION_DIR="${HOME}/.sonarless/extensions"
 
-export DOCKER_SONAR_CLI=sonarsource/sonar-scanner-cli
-export DOCKER_SONAR_SERVER=sonarqube
+export DOCKER_SONAR_CLI=${DOCKER_SONAR_CLI:-"sonarsource/sonar-scanner-cli"}
+export DOCKER_SONAR_SERVER=${DOCKER_SONAR_SERVER:-"sonarqube"}
 
 export CLI_NAME="sonarless"
 
@@ -60,7 +60,7 @@ function start() {
         docker run -d --name "${SONAR_INSTANCE_NAME}" -p "${SONAR_INSTANCE_PORT}:9000"  \
             -v "${SONAR_EXTENSION_DIR}:/opt/sonarqube/extensions/plugins" \
             -v "${SONAR_EXTENSION_DIR}:/usr/local/bin" \
-            sonarqube > /dev/null 2>&1 
+            "${DOCKER_SONAR_SERVER}" > /dev/null 2>&1 
     else
         docker start "${SONAR_INSTANCE_NAME}" > /dev/null 2>&1 
     fi
@@ -118,7 +118,7 @@ function scan() {
         -e SONAR_TOKEN="${SONAR_TOKEN}" \
         -e SONAR_SCANNER_OPTS="-Dsonar.projectKey=${SONAR_PROJECT_NAME} -Dsonar.sources=${SONAR_SOURCE_PATH}" \
         -v "${SONAR_GITROOT}:/usr/src" \
-        sonarsource/sonar-scanner-cli
+        "${DOCKER_SONAR_CLI}"
 
     # 3. Wait for scanning to be done
     printf '\nWaiting for analysis ' 
@@ -167,7 +167,7 @@ function sonar-ext-get() {
         tar_file="${tag}/shellcheck-${tag}.linux.${arch}.tar.xz";
         curl -s --fail --location --progress-bar "${url_base}${tar_file}" | tar xJf - 
 
-        mv "shellcheck-${tag}/shellcheck" ${SONAR_EXTENSION_DIR}/;
+        mv "shellcheck-${tag}/shellcheck" "${SONAR_EXTENSION_DIR}/";
         rm -rf "shellcheck-${tag}";
     fi
 
