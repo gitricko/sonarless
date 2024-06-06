@@ -36,12 +36,8 @@ export SONARLESS_SOURCES="https://raw.githubusercontent.com/gitricko/sonarless/m
 
 if [ -z "$SONARLESS_DIR" ]; then
     SONARLESS_DIR="$HOME/.sonarless"
-    SONARLESS_DIR_RAW='$HOME/.sonarless'
-else
-    SONARLESS_DIR_RAW="$SONARLESS_DIR"
 fi
 export SONARLESS_DIR
-export SONARLESS_CLI_NAME='sonarless'
 
 # Local variables
 sonarless_bashrc="${HOME}/.bashrc"
@@ -129,30 +125,27 @@ mkdir -p "${SONARLESS_DIR}"
 set +e
 # Download makefile.sh depending which env (git or over curl)
 # Check if you are in sonarless git
-[ -d ./.git ] && git remote get-url origin | grep sonarless 2>&1 > /dev/null
-if [ $? -eq 0 ]; then
+if [[ ! -d ./.git ]] || git remote get-url origin | grep -q sonarless; then
 	echo "* Copying from local git..."
 	cp -f ./makefile.sh "${SONARLESS_DIR}"
 else
 	echo "* Downloading..."
 	curl --fail --location --progress-bar "${SONARLESS_SOURCES}" > "${SONARLESS_DIR}/makefile.sh"
-	chmod +x ${SONARLESS_DIR}/makefile.sh
+	chmod +x "${SONARLESS_DIR}/makefile.sh"
 fi
 
 # Create alias in ~/.bashrc ~/.zshrc if available
-[[ -s "${sonarless_bashrc}" ]] && grep 'sonarless' ${sonarless_bashrc}
-if [ $? -ne 0 ];then 
-	echo "alias ${SONARLESS_CLI_NAME}='$HOME/.sonarless/makefile.sh'" >> ${sonarless_bashrc}
+if [[ ! -s "${sonarless_bashrc}" ]] || ! grep -q 'sonarless' "${sonarless_bashrc}" ;then 
+	echo "alias sonarless='$HOME/.sonarless/makefile.sh'" >> "${sonarless_bashrc}"
 fi
 
-[[ -s "${sonarless_zshrc}" ]] && grep 'sonarless' ${sonarless_zshrc}
-if [ $? -ne 0 ];then 
-	echo "alias ${SONARLESS_CLI_NAME}='$HOME/.sonarless/makefile.sh'" >> ${sonarless_zshrc}
+if [[ ! -s "${sonarless_zshrc}" ]] || ! grep -q 'sonarless' "${sonarless_zshrc}"; then 
+	echo "alias sonarless='$HOME/.sonarless/makefile.sh'" >> "${sonarless_zshrc}"
 fi
 
 # Dynamically create the alias during installation so that use can use it
-if ! command -v ${SONARLESS_CLI_NAME} > /dev/null; then
-	alias ${SONARLESS_CLI_NAME}='$HOME/.sonarless/makefile.sh'
+if ! command -v sonarless > /dev/null; then
+	alias sonarless='$HOME/.sonarless/makefile.sh'
 fi
 
 echo ""
@@ -162,6 +155,6 @@ echo "    alias sonarless='$HOME/.sonarless/makefile.sh' "
 echo ""
 echo "Then issue the following command:"
 echo ""
-echo "    ${SONARLESS_CLI_NAME} help"
+echo "    sonarless help"
 echo ""
 echo "Enjoy!!!"
