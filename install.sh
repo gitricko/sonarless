@@ -132,17 +132,15 @@ if [ $? -eq 0 ]; then
 else
 	echo "* Downloading..."
 	curl --fail --location --progress-bar "${SONARLESS_SOURCES}" > "${SONARLESS_DIR}/makefile.sh"
-	chmod +x ${SONARLESS_DIR}/makefile.sh
+	chmod +x "${SONARLESS_DIR}/makefile.sh"
 fi
 
 # Create alias in ~/.bashrc ~/.zshrc if available
-[[ -s "${sonarless_bashrc}" ]] && grep 'sonarless' ${sonarless_bashrc}
-if [ $? -ne 0 ];then 
+if [[ ! -s "${sonarless_bashrc}" ]] || ! grep -q 'sonarless' ${sonarless_bashrc} ;then 
 	echo "alias sonarless='$HOME/.sonarless/makefile.sh'" >> ${sonarless_bashrc}
 fi
 
-[[ -s "${sonarless_zshrc}" ]] && grep 'sonarless' ${sonarless_zshrc}
-if [ $? -ne 0 ];then 
+if [[ ! -s "${sonarless_zshrc}" ]] || ! grep -q 'sonarless' ${sonarless_zshrc}; then 
 	echo "alias sonarless='$HOME/.sonarless/makefile.sh'" >> ${sonarless_zshrc}
 fi
 
