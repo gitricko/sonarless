@@ -7,6 +7,9 @@ on:
       - main
       - releases/*
 
+  schedule:
+    - cron: '55 23 * * 5' # Runs at 23:55 every Friday
+
 jobs:
   sonarless-cli-test:
     runs-on: ubuntu-latest

@@ -9,8 +9,8 @@ export SONAR_SOURCE_PATH=${SONAR_SOURCE_PATH:-"."}
 export SONAR_METRICS_PATH=${SONAR_METRICS_PATH:-"./sonar-metrics.json"}
 export SONAR_EXTENSION_DIR="${HOME}/.sonarless/extensions"
 
-export DOCKER_SONAR_CLI=${DOCKER_SONAR_CLI:-"sonarsource/sonar-scanner-cli:10"}
-export DOCKER_SONAR_SERVER=${DOCKER_SONAR_SERVER:-"sonarqube:community"}
+export DOCKER_SONAR_CLI=${DOCKER_SONAR_CLI:-"sonarsource/sonar-scanner-cli:10.0"}
+export DOCKER_SONAR_SERVER=${DOCKER_SONAR_SERVER:-"sonarqube:10.5-community"}
 
 export CLI_NAME="sonarless"
 
