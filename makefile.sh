@@ -91,7 +91,7 @@ function start() {
         exit 1
     fi
 
-    # 2. Reset admin password to sonar
+    # 2. Reset admin password to sonarless
     curl -s -X POST -u "admin:admin" \
         -d "login=admin&previousPassword=admin&password=sonarless" \
         "http://localhost:${SONAR_INSTANCE_PORT}/api/users/change_password"
