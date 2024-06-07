@@ -193,7 +193,7 @@ function sonar-ext-get() {
 
 function docker-clean() {
     docker rm -f "${SONAR_INSTANCE_NAME}"
-    docker image rm -f "${DOCKER_SONAR_CLI} ${DOCKER_SONAR_SERVER}"
+    docker image rm -f "${DOCKER_SONAR_CLI}" "${DOCKER_SONAR_SERVER}"
     docker volume prune -f
     docker network rm -f "${CLI_NAME}"
 }
