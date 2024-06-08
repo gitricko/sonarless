@@ -168,19 +168,24 @@ function sonar-ext-get() {
 
     if [ ! -f "${SONAR_EXTENSION_DIR}/shellcheck" ]; then
         # src: https://github.com/koalaman/shellcheck/blob/master/Dockerfile.multi-arch
-        arch="$(uname -m)";
-        tag=latest
+        arch="$(uname -m)"
+        os="$(uname | sed 's/.*/\L&/')"
+        tag="v0.10.0"
 
         if [ "${arch}" = 'armv7l' ]; then
-            arch='armv6hf';
+            arch='armv6hf'
+        fi
+
+        if [ "${arch}" = 'arm64' ]; then
+            arch='aarch64'
         fi
 
         url_base='https://github.com/koalaman/shellcheck/releases/download/'
-        tar_file="${tag}/shellcheck-${tag}.linux.${arch}.tar.xz";
+        tar_file="${tag}/shellcheck-${tag}.${os}.${arch}.tar.xz"
         curl -s --fail --location --progress-bar "${url_base}${tar_file}" | tar xJf - 
 
-        mv "shellcheck-${tag}/shellcheck" "${SONAR_EXTENSION_DIR}/";
-        rm -rf "shellcheck-${tag}";
+        mv "shellcheck-${tag}/shellcheck" "${SONAR_EXTENSION_DIR}/"
+        rm -rf "shellcheck-${tag}"
     fi
 
     SONAR_SHELLCHECK="sonar-shellcheck-plugin-2.5.0.jar"
