@@ -169,12 +169,15 @@ function sonar-ext-get() {
     if [ ! -f "${SONAR_EXTENSION_DIR}/shellcheck" ]; then
         # src: https://github.com/koalaman/shellcheck/blob/master/Dockerfile.multi-arch
         arch="$(uname -m)"
-        tmp="$(uname)"
-        os="${tmp,,}"
+        os="$(uname | sed 's/.*/\L&/')"
         tag="v0.10.0"
 
         if [ "${arch}" = 'armv7l' ]; then
             arch='armv6hf'
+        fi
+
+        if [ "${arch}" = 'arm64' ]; then
+            arch='aarch64'
         fi
 
         url_base='https://github.com/koalaman/shellcheck/releases/download/'
