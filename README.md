@@ -2,6 +2,7 @@
 [![Codacy](https://github.com/gitricko/sonarless/actions/workflows/codacy.yml/badge.svg)](https://github.com/gitricko/sonarless/actions/workflows/codacy.yml)
 ![GitHub License](https://img.shields.io/github/license/gitricko/sonarless)
 ![GitHub Release](https://img.shields.io/github/v/release/gitricko/sonarless)
+![GitHub commits since latest release](https://img.shields.io/github/commits-since/gitricko/sonarless/latest)
 
 # Sonarless v1.1
 
