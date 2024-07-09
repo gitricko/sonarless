@@ -51,3 +51,7 @@ runs:
         SONAR_METRICS_PATH: ${{inputs.sonar-metrics-path}}
         SONAR_INSTANCE_PORT: ${{ inputs.sonar-instance-port }}
         SONAR_GITROOT: ${{ github.workspace }}
+
+branding:
+  icon: "check-circle"
+  color: "green"
