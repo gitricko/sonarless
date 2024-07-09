@@ -208,4 +208,4 @@ function uninstall() {
     rm -rf "${HOME}/.${CLI_NAME}"
 }
 
-"$*"
+$*
