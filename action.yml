@@ -5,20 +5,18 @@ author: "gitricko"
 inputs:
   sonar-project-name:
     description: "SonarQube Project Name"
-    required: true
+    required: false
     default: ${{github.event.repository.name}}
   sonar-project-key:
     description: "SonarQube Project Key"
-    required: true
+    required: false
     default: ${{github.event.repository.name}}
   sonar-source-path:
     description: "SonarQube Source Path from Git Root"
-    required: true
-    default: .
+    required: false
   sonar-metrics-path:
     description: "SonarQube Metrics JSON Path from Git Root"
-    required: true
-    default: ./sonar-metrics.json
+    required: false
   sonar-instance-port:
     description: "SonarQube Instance Port"
     required: false
