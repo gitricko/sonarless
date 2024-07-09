@@ -18,7 +18,7 @@ inputs:
   sonar-metrics-path:
     description: "SonarQube Metrics JSON Path from Git Root"
     required: true
-    default: ./sonar-matrics.json
+    default: ./sonar-metrics.json
   sonar-instance-port:
     description: "SonarQube Instance Port"
     required: false
