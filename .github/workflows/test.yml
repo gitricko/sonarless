@@ -82,3 +82,28 @@ jobs:
           ISSUES=$(cat ./blahblah.json | jq -r '.component.measures[] | select(.metric == "open_issues").value')
           echo "# of issues = ${ISSUES}"
           [ "${ISSUES}" -le 3 ]
+
+  sonarless-action-test-on-main:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Sonarless Scan
+        uses: gitricko/sonarless@main
+        with:
+          sonar-source-path: '.'
+          sonar-metrics-path: './blahblah.json'
+          sonar-instance-port: '9999'
+
+      - name: Check Sonar Metrics
+        run: |
+          echo "Checking for 0 vulnerabilities in Sonar Metrics JSON"
+          VULN=$(cat ./blahblah.json | jq -r '.component.measures[] | select(.metric == "vulnerabilities").value')
+          echo "# of vulnerabilities = ${VULN}"
+          [ "${VULN}" -eq "0" ]
+
+          echo "Checking for any issues <= 3 in Sonar Metrics JSON"
+          ISSUES=$(cat ./blahblah.json | jq -r '.component.measures[] | select(.metric == "open_issues").value')
+          echo "# of issues = ${ISSUES}"
+          [ "${ISSUES}" -le 3 ]

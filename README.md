@@ -4,7 +4,7 @@
 ![GitHub Release](https://img.shields.io/github/v/release/gitricko/sonarless)
 ![GitHub commits since latest release](https://img.shields.io/github/commits-since/gitricko/sonarless/latest)
 
-# Sonarless v1.2
+# Sonarless v1.3
 
 This developer-friendly CLI and GitHub Action enable SonarQube scanning for your repository without the need for a dedicated hosted SonarQube server. It starts a SonarQube Docker instance, allowing developers to scan code, check results, and generate a JSON metrics file for automation. This ensures you can easily assess and maintain the quality of your code.
 
@@ -49,7 +49,7 @@ Enjoy!!!
 To understand CLI sub-commands, just run `sonarless help`
 
 Usually, you only need to know 2 sub-commands
-- `sonarless scan`: to start scanning your code in the current directory will be uploaded for scanning. When the scan is done, just login webui into your local personal instance of sonarqube via [http://localhost:9234](http://localhost:9234) to get details from SonarQube. The default password for `admin` is `sonarless`
+- `sonarless scan`: to start scanning your code in the current directory will be uploaded for scanning. When the scan is done, just login webui into your local personal instance of sonarqube via [http://localhost:9234](http://localhost:9234) to get details from SonarQube. The default password for `admin` is `Son@rless123`
 
 - `sonarless results`: to generate `sonar-metrics.json` metrics file in your current directory
 
@@ -62,7 +62,7 @@ This CLI works perfectly with Github CodeSpace
 
 <!-- start usage -->
 ```yaml
-- uses: gitricko/sonarless@v1.2
+- uses: gitricko/sonarless@v1.3
   with:
     # Folder path to scan from git-root
     # Default: . 
@@ -100,7 +100,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Sonarless Scan
-        uses: gitricko/sonarless@v1.2
+        uses: gitricko/sonarless@v1.3
 ```
 
 ## Scan particular folder from git root directory
@@ -114,7 +114,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Sonarless Scan
-        uses: gitricko/sonarless@v1.2
+        uses: gitricko/sonarless@v1.3
         with:
           sonar-source-path: 'src'
 ```
@@ -130,7 +130,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Sonarless Scan
-        uses: gitricko/sonarless@v1.2
+        uses: gitricko/sonarless@v1.3
         with:
           sonar-source-path: 'src'
           sonar-metrics-path: './sonar-mymetrics.json'
@@ -154,7 +154,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Sonarless Scan
-        uses: gitricko/sonarless@v1.2
+        uses: gitricko/sonarless@v1.3
         with:
           sonar-instance-port: '1234'
 ```
