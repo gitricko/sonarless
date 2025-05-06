@@ -83,7 +83,7 @@ jobs:
           echo "# of issues = ${ISSUES}"
           [ "${ISSUES}" -le 3 ]
 
-  sonarless-last-rel-test:
+  sonarless-action-test-on-main:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
