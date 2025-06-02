@@ -10,6 +10,9 @@ on:
   schedule:
     - cron: '55 23 * * 5' # Runs at 23:55 every Friday
 
+permissions:
+  contents: read
+
 jobs:
   sonarless-cli-test:
     runs-on: ubuntu-latest
