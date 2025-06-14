@@ -25,32 +25,36 @@ runs:
   using: "composite"
   steps:
     - name: Get Docker Deps
+      env:
+        ACTION_PATH: ${{ github.action_path }}
       run: |
-        ${{ github.action_path }}/makefile.sh docker-deps-get
-        ${{ github.action_path }}/makefile.sh sonar-ext-get
+        $ACTION_PATH/makefile.sh docker-deps-get
+        $ACTION_PATH/makefile.sh sonar-ext-get
       shell: bash
 
     - name: Scanning
-      run: ${{ github.action_path }}/makefile.sh scan
-      shell: bash
       env:
+        ACTION_PATH: ${{ github.action_path }}
         SONAR_PROJECT_NAME: ${{inputs.sonar-project-name}}
         SONAR_PROJECT_KEY: ${{inputs.sonar-project-key}}
         SONAR_SOURCE_PATH: ${{inputs.sonar-source-path}}
         SONAR_METRICS_PATH: ${{inputs.sonar-metrics-path}}
         SONAR_INSTANCE_PORT: ${{ inputs.sonar-instance-port }}
         SONAR_GITROOT: ${{ github.workspace }}
+      run: $ACTION_PATH/makefile.sh scan
+      shell: bash
 
     - name: Scan Results
-      run: ${{ github.action_path }}/makefile.sh results
-      shell: bash
       env:
+        ACTION_PATH: ${{ github.action_path }}
         SONAR_PROJECT_NAME: ${{inputs.sonar-project-name}}
         SONAR_PROJECT_KEY: ${{inputs.sonar-project-key}}
         SONAR_SOURCE_PATH: ${{inputs.sonar-source-path}}
         SONAR_METRICS_PATH: ${{inputs.sonar-metrics-path}}
         SONAR_INSTANCE_PORT: ${{ inputs.sonar-instance-port }}
         SONAR_GITROOT: ${{ github.workspace }}
+      run: $ACTION_PATH/makefile.sh results
+      shell: bash
 
 branding:
   icon: "check-circle"
