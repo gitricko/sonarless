@@ -22,6 +22,9 @@ jobs:
         uses: VIDADv1/scanwise@v1
         with:
           reports-scopes: '["overall", "new"]'
-          reports-extensions: '["md"]'
-          reports-retention-days: '1'
+          reports-extensions: '["md","pdf","html","json"]'
+          reports-retention-days: '1000d'
           generate-pr-comment: true
+          pre-scan-script: |
+            echo "Running pre-scan setup..."
+            # Add your custom setup commands here
