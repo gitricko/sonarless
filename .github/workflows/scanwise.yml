@@ -1,0 +1,27 @@
+# .github/workflows/scanwise.yml
+name: 'Scanwise Analysis'
+ 
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+ 
+jobs:
+  scanwise:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+      issues: write
+    steps:
+      - name: Scanwise Scan
+        uses: VIDADv1/scanwise@v1
+        with:
+          reports-scopes: '["overall", "new"]'
+          reports-extensions: '["md"]'
+          reports-retention-days: '1'
+          generate-pr-comment: true
