@@ -23,7 +23,8 @@ jobs:
         with:
           reports-scopes: '["overall", "new"]'
           reports-extensions: '["md","pdf","html","json"]'
-          reports-retention-days: '1000d'
+          reports-retention-days: '90'
+          new-code-n-days: '1000d'
           generate-pr-comment: true
           pre-scan-script: |
             echo "Running pre-scan setup..."
