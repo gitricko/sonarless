@@ -1,0 +1,4 @@
+exclude_paths:
+  - .github/workflows/codacy.yml
+  - .codacy.yml
+  - "**/*.md"
