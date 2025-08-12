@@ -40,7 +40,7 @@ jobs:
 
       # Execute Codacy Analysis CLI and generate a SARIF output with the security issues identified during the analysis
       - name: Run Codacy Analysis CLI
-        uses: codacy/codacy-analysis-cli-action@master #v4.4.5
+        uses: codacy/codacy-analysis-cli-action@v4.4.7 #v4.4.5
         with:
           # Check https://github.com/codacy/codacy-analysis-cli#project-token to get your project token from your Codacy repository
           # You can also omit the token and run the tools that support default configurations
@@ -53,7 +53,6 @@ jobs:
           # Force 0 exit code to allow SARIF file generation
           # This will handover control about PR rejection to the GitHub side
           max-allowed-issues: 2147483647
-          # config-file: .codacy.yml # Optional, if you have a custom Codacy configuration file
 
       # Upload the SARIF file generated in the previous step
       - name: Upload SARIF results file
