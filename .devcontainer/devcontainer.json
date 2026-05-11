@@ -6,5 +6,5 @@
     }
   },
   "postCreateCommand": "bash ./.devcontainer/post-create-cmd.sh",
-  "postStartCommand": "bash echo '[post-start-cmd.sh] Container started' >> /tmp/post-start-cmd.log"
+  "postStartCommand": "bash -c \"echo '[post-start-cmd.sh] Container started' >> /tmp/post-start-cmd.log\""
 }
