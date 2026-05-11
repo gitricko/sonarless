@@ -2,7 +2,7 @@
 
 # Install modelrelay globally
 sudo npm install modelrelay -g --prefix /usr/local/lib/modelrelay
-sudo ln -s /usr/local/lib/modelrelay/bin/modelrelay /usr/local/bin/modelrelay
+sudo ln -sf /usr/local/lib/modelrelay/bin/modelrelay /usr/local/bin/modelrelay
 sudo npm cache clean --force
 
 echo "[post-create-cmd.sh] Starting modelrelay in the background..."
