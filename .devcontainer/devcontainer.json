@@ -1,0 +1,10 @@
+{
+  "name": "Hermes-Agent",
+  "customizations": {
+    "vscode": {
+      "extensions": ["saoudrizwan.claude-dev","joaompfp.hermes-ai-agent"]
+    }
+  },
+  "postCreateCommand": "bash ./.devcontainer/post-create-cmd.sh",
+  "postStartCommand": "bash -c \"echo '[post-start-cmd.sh] Container started' >> /tmp/post-start-cmd.log\""
+}
