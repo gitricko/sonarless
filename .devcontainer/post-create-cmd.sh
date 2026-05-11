@@ -13,7 +13,8 @@ else
 fi
 
 # Install hermes-agent
-curl -fsSL https://raw.githubusercontent.com/NousResearch/hermes-agent/main/scripts/install.sh | bash -s -- --skip-setup
+HERMES_VERSION="v2026.5.7"
+curl -fsSL "https://raw.githubusercontent.com/NousResearch/hermes-agent/${HERMES_VERSION}/scripts/install.sh" | bash -s -- --skip-setup
 npm cache clean --force
 sudo rm -rf /var/lib/apt/lists/* 
 
