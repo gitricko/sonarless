@@ -4,7 +4,7 @@
 ![GitHub Release](https://img.shields.io/github/v/release/gitricko/sonarless)
 ![GitHub commits since latest release](https://img.shields.io/github/commits-since/gitricko/sonarless/latest)
 
-# Sonarless v1.3
+# Sonarless v1.4
 
 This developer-friendly CLI and GitHub Action enable SonarQube scanning for your repository without the need for a dedicated hosted SonarQube server. It starts a SonarQube Docker instance, allowing developers to scan code, check results, and generate a JSON metrics file for automation. This ensures you can easily assess and maintain the quality of your code.
 
@@ -62,7 +62,7 @@ This CLI works perfectly with Github CodeSpace
 
 <!-- start usage -->
 ```yaml
-- uses: gitricko/sonarless@v1.3
+- uses: gitricko/sonarless@v1.4
   with:
     # Folder path to scan from git-root
     # Default: . 
