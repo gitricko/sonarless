@@ -100,7 +100,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Sonarless Scan
-        uses: gitricko/sonarless@v1.3
+        uses: gitricko/sonarless@v1.4
 ```
 
 ## Scan particular folder from git root directory
@@ -114,7 +114,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Sonarless Scan
-        uses: gitricko/sonarless@v1.3
+        uses: gitricko/sonarless@v1.4
         with:
           sonar-source-path: 'src'
 ```
@@ -130,7 +130,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Sonarless Scan
-        uses: gitricko/sonarless@v1.3
+        uses: gitricko/sonarless@v1.4
         with:
           sonar-source-path: 'src'
           sonar-metrics-path: './sonar-mymetrics.json'
@@ -154,7 +154,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Sonarless Scan
-        uses: gitricko/sonarless@v1.3
+        uses: gitricko/sonarless@v1.4
         with:
           sonar-instance-port: '1234'
 ```
